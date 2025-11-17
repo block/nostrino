@@ -275,3 +275,5 @@ The project is published to Maven Central:
 - **Binary compatibility matters** - always run `gradle apiCheck` before committing
 - **Multiplatform project** - be mindful of platform-specific vs common code placement
 - **No compiler warnings allowed** - `allWarningsAsErrors = true` is set
+
+@ai-rules/issue-tracking.md
