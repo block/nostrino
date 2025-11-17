@@ -45,13 +45,13 @@ subprojects {
   plugins.withType<KotlinPluginWrapper> {
     val compileKotlin by tasks.getting(KotlinCompile::class) {
       kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "11"
         allWarningsAsErrors = true
       }
     }
     val compileTestKotlin by tasks.getting(KotlinCompile::class) {
       kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "11"
         allWarningsAsErrors = true
       }
     }

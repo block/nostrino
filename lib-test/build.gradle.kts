@@ -13,6 +13,10 @@ plugins {
   id("com.bmuschko.docker-remote-api") version "9.3.0"
 }
 
+kotlin {
+  jvmToolchain(11)
+}
+
 dependencies {
   implementation(project(":lib"))
   implementation(libs.kotestProperty)
