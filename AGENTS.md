@@ -238,12 +238,55 @@ Main SDK library implementing Nostr protocol functionality. Contains multiplatfo
 - Message encoding/decoding
 - Filter construction
 
+#### Adding New Message Types (NIPs)
+
+When implementing a new NIP with message types:
+
+1. **Package Structure**: Create a package named after the NIP (e.g., `app.cash.nostrino.nip47` for NIP-47)
+2. **EventContent Implementation**: New message types should extend `EventContent` interface
+3. **Kind Constants**: Define event kind as a constant in the companion object (e.g., `const val kind = 13194`)
+4. **Tags**: If the NIP introduces new tags, add them to `app.cash.nostrino.model.Tag` (sealed interfaces require same package)
+
 ### lib-test/
 Testing utilities and integration tests. Contains:
 - Arb generators for test data (`ArbEvent`, `ArbPubKey`, etc.)
 - Fake implementations (`FakeRelay`)
 - Integration tests against real relay server
 - Docker-based relay setup for testing
+
+#### Testing Requirements for New Message Types
+
+All new message types MUST include:
+
+1. **Arb Generators**: Create `Arb<YourType>` generators in `lib-test/src/main/kotlin` matching the package structure
+   - Example: `ArbNip47.kt` for NIP-47 message types
+   - Compose existing Arb generators (e.g., `arbSecKey`, `arbPubKey`, `arbEvent`)
+
+2. **Property-Based Tests**: Write tests using the Arb generators
+   - Test serialization/deserialization round-trips
+   - Test EventContent.sign() and validation
+   - Use `checkAll()` for property-based testing where appropriate
+
+3. **Example**:
+```kotlin
+// In lib-test/src/main/kotlin/app/cash/nostrino/nip47/ArbNip47.kt
+val arbNip47Info = arbitrary {
+  Nip47Info(
+    capabilities = setOf("pay_invoice", "get_balance"),
+    supportedEncryption = setOf("nip44_v2", "nip04"),
+    notifications = setOf("payment_received")
+  )
+}
+
+// In lib-test/src/test/kotlin/app/cash/nostrino/nip47/Nip47InfoTest.kt
+class Nip47InfoTest : StringSpec({
+  "round trip sign and parse" {
+    val info = arbNip47Info.next()
+    val signed = info.sign(arbSecKey.next())
+    signed.validSignature shouldBe true
+  }
+})
+```
 
 ## Publishing
 
