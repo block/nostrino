@@ -53,3 +53,12 @@ public final class app/cash/nostrino/model/ArbTags {
 	public final fun getArbTag ()Lio/kotest/property/Arb;
 }
 
+public final class app/cash/nostrino/model/nip47/ArbNip47 {
+	public static final field INSTANCE Lapp/cash/nostrino/model/nip47/ArbNip47;
+	public final fun getArbNip47Info ()Lio/kotest/property/Arb;
+	public final fun getArbNip47Notification ()Lio/kotest/property/Arb;
+	public final fun getArbNip47NotificationLegacy ()Lio/kotest/property/Arb;
+	public final fun getArbNip47Request ()Lio/kotest/property/Arb;
+	public final fun getArbNip47Response ()Lio/kotest/property/Arb;
+}
+
