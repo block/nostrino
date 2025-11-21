@@ -91,6 +91,7 @@ nostrino/
   - Method parameters: new line after `(`, right paren on new line
   - Call parameters: new line after `(`, right paren on new line
 - **Code Style**: Follow Kotlin official code style
+- **Copyright Headers**: NOT required in new files
 
 ### Testing
 

@@ -362,6 +362,18 @@ public final class app/cash/nostrino/model/EncryptedDmKt {
 	public static final fun encrypt (Lapp/cash/nostrino/crypto/SecKey;Lapp/cash/nostrino/crypto/PubKey;Ljava/lang/String;)Lapp/cash/nostrino/crypto/CipherText;
 }
 
+public final class app/cash/nostrino/model/EncryptionTag : app/cash/nostrino/model/Tag {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lapp/cash/nostrino/model/EncryptionTag;
+	public static synthetic fun copy$default (Lapp/cash/nostrino/model/EncryptionTag;Ljava/lang/String;ILjava/lang/Object;)Lapp/cash/nostrino/model/EncryptionTag;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEncryptionSchemes ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toJsonList ()Ljava/util/List;
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class app/cash/nostrino/model/Event {
 	public static final field Companion Lapp/cash/nostrino/model/Event$Companion;
 	public fun <init> (Lokio/ByteString;Lokio/ByteString;Ljava/time/Instant;ILjava/util/List;Ljava/lang/String;Lokio/ByteString;)V
@@ -512,6 +524,18 @@ public final class app/cash/nostrino/model/LnUrlTag : app/cash/nostrino/model/Ta
 	public static synthetic fun copy$default (Lapp/cash/nostrino/model/LnUrlTag;Ljava/lang/String;ILjava/lang/Object;)Lapp/cash/nostrino/model/LnUrlTag;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getLnurl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toJsonList ()Ljava/util/List;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class app/cash/nostrino/model/NotificationsTag : app/cash/nostrino/model/Tag {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lapp/cash/nostrino/model/NotificationsTag;
+	public static synthetic fun copy$default (Lapp/cash/nostrino/model/NotificationsTag;Ljava/lang/String;ILjava/lang/Object;)Lapp/cash/nostrino/model/NotificationsTag;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getNotificationTypes ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toJsonList ()Ljava/util/List;
 	public fun toString ()Ljava/lang/String;
@@ -730,5 +754,136 @@ public final class app/cash/nostrino/model/ZapRequest : app/cash/nostrino/model/
 }
 
 public final class app/cash/nostrino/model/ZapRequest$Companion {
+}
+
+public final class app/cash/nostrino/nip47/Nip47Info : app/cash/nostrino/model/EventContent {
+	public static final field Companion Lapp/cash/nostrino/nip47/Nip47Info$Companion;
+	public static final field kind I
+	public fun <init> (Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun asZapRequest ()Lapp/cash/nostrino/model/ZapRequest;
+	public final fun component1 ()Ljava/util/Set;
+	public final fun component2 ()Ljava/util/Set;
+	public final fun component3 ()Ljava/util/Set;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/List;)Lapp/cash/nostrino/nip47/Nip47Info;
+	public static synthetic fun copy$default (Lapp/cash/nostrino/nip47/Nip47Info;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;Ljava/util/List;ILjava/lang/Object;)Lapp/cash/nostrino/nip47/Nip47Info;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCapabilities ()Ljava/util/Set;
+	public fun getKind ()I
+	public final fun getNotifications ()Ljava/util/Set;
+	public final fun getSupportedEncryption ()Ljava/util/Set;
+	public fun getTags ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun sign (Lapp/cash/nostrino/crypto/SecKey;)Lapp/cash/nostrino/model/Event;
+	public fun toJsonString ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class app/cash/nostrino/nip47/Nip47Info$Companion {
+}
+
+public final class app/cash/nostrino/nip47/Nip47Notification : app/cash/nostrino/model/EventContent {
+	public static final field Companion Lapp/cash/nostrino/nip47/Nip47Notification$Companion;
+	public static final field kind I
+	public fun <init> (Lapp/cash/nostrino/crypto/PubKey;Ljava/lang/String;Ljava/util/List;)V
+	public synthetic fun <init> (Lapp/cash/nostrino/crypto/PubKey;Ljava/lang/String;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun asZapRequest ()Lapp/cash/nostrino/model/ZapRequest;
+	public final fun component1 ()Lapp/cash/nostrino/crypto/PubKey;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Lapp/cash/nostrino/crypto/PubKey;Ljava/lang/String;Ljava/util/List;)Lapp/cash/nostrino/nip47/Nip47Notification;
+	public static synthetic fun copy$default (Lapp/cash/nostrino/nip47/Nip47Notification;Lapp/cash/nostrino/crypto/PubKey;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lapp/cash/nostrino/nip47/Nip47Notification;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClientPubKey ()Lapp/cash/nostrino/crypto/PubKey;
+	public final fun getEncryptedContent ()Ljava/lang/String;
+	public fun getKind ()I
+	public fun getTags ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun sign (Lapp/cash/nostrino/crypto/SecKey;)Lapp/cash/nostrino/model/Event;
+	public fun toJsonString ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class app/cash/nostrino/nip47/Nip47Notification$Companion {
+}
+
+public final class app/cash/nostrino/nip47/Nip47NotificationLegacy : app/cash/nostrino/model/EventContent {
+	public static final field Companion Lapp/cash/nostrino/nip47/Nip47NotificationLegacy$Companion;
+	public static final field kind I
+	public fun <init> (Lapp/cash/nostrino/crypto/PubKey;Ljava/lang/String;Ljava/util/List;)V
+	public synthetic fun <init> (Lapp/cash/nostrino/crypto/PubKey;Ljava/lang/String;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun asZapRequest ()Lapp/cash/nostrino/model/ZapRequest;
+	public final fun component1 ()Lapp/cash/nostrino/crypto/PubKey;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Lapp/cash/nostrino/crypto/PubKey;Ljava/lang/String;Ljava/util/List;)Lapp/cash/nostrino/nip47/Nip47NotificationLegacy;
+	public static synthetic fun copy$default (Lapp/cash/nostrino/nip47/Nip47NotificationLegacy;Lapp/cash/nostrino/crypto/PubKey;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lapp/cash/nostrino/nip47/Nip47NotificationLegacy;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClientPubKey ()Lapp/cash/nostrino/crypto/PubKey;
+	public final fun getEncryptedContent ()Ljava/lang/String;
+	public fun getKind ()I
+	public fun getTags ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun sign (Lapp/cash/nostrino/crypto/SecKey;)Lapp/cash/nostrino/model/Event;
+	public fun toJsonString ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class app/cash/nostrino/nip47/Nip47NotificationLegacy$Companion {
+}
+
+public final class app/cash/nostrino/nip47/Nip47Request : app/cash/nostrino/model/EventContent {
+	public static final field Companion Lapp/cash/nostrino/nip47/Nip47Request$Companion;
+	public static final field kind I
+	public fun <init> (Lapp/cash/nostrino/crypto/PubKey;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)V
+	public synthetic fun <init> (Lapp/cash/nostrino/crypto/PubKey;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun asZapRequest ()Lapp/cash/nostrino/model/ZapRequest;
+	public final fun component1 ()Lapp/cash/nostrino/crypto/PubKey;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (Lapp/cash/nostrino/crypto/PubKey;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;)Lapp/cash/nostrino/nip47/Nip47Request;
+	public static synthetic fun copy$default (Lapp/cash/nostrino/nip47/Nip47Request;Lapp/cash/nostrino/crypto/PubKey;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lapp/cash/nostrino/nip47/Nip47Request;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEncryptedContent ()Ljava/lang/String;
+	public final fun getEncryptionType ()Ljava/lang/String;
+	public fun getKind ()I
+	public fun getTags ()Ljava/util/List;
+	public final fun getWalletPubKey ()Lapp/cash/nostrino/crypto/PubKey;
+	public fun hashCode ()I
+	public fun sign (Lapp/cash/nostrino/crypto/SecKey;)Lapp/cash/nostrino/model/Event;
+	public fun toJsonString ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class app/cash/nostrino/nip47/Nip47Request$Companion {
+}
+
+public final class app/cash/nostrino/nip47/Nip47Response : app/cash/nostrino/model/EventContent {
+	public static final field Companion Lapp/cash/nostrino/nip47/Nip47Response$Companion;
+	public static final field kind I
+	public fun <init> (Lapp/cash/nostrino/crypto/PubKey;Lokio/ByteString;Ljava/lang/String;Ljava/util/List;)V
+	public synthetic fun <init> (Lapp/cash/nostrino/crypto/PubKey;Lokio/ByteString;Ljava/lang/String;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun asZapRequest ()Lapp/cash/nostrino/model/ZapRequest;
+	public final fun component1 ()Lapp/cash/nostrino/crypto/PubKey;
+	public final fun component2 ()Lokio/ByteString;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/util/List;
+	public final fun copy (Lapp/cash/nostrino/crypto/PubKey;Lokio/ByteString;Ljava/lang/String;Ljava/util/List;)Lapp/cash/nostrino/nip47/Nip47Response;
+	public static synthetic fun copy$default (Lapp/cash/nostrino/nip47/Nip47Response;Lapp/cash/nostrino/crypto/PubKey;Lokio/ByteString;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lapp/cash/nostrino/nip47/Nip47Response;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClientPubKey ()Lapp/cash/nostrino/crypto/PubKey;
+	public final fun getEncryptedContent ()Ljava/lang/String;
+	public fun getKind ()I
+	public final fun getRequestEventId ()Lokio/ByteString;
+	public fun getTags ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun sign (Lapp/cash/nostrino/crypto/SecKey;)Lapp/cash/nostrino/model/Event;
+	public fun toJsonString ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class app/cash/nostrino/nip47/Nip47Response$Companion {
 }
 

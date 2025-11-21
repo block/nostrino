@@ -45,6 +45,8 @@ sealed interface Tag {
           ZapReceiptDescriptionTag(event)
         }
 
+        "encryption" -> EncryptionTag(value)
+        "notifications" -> NotificationsTag(value)
         else -> throw IllegalArgumentException("Invalid tag format: $strings")
       }
     }
@@ -87,4 +89,12 @@ data class ZapReceiptDescriptionTag(val description: Event) : Tag {
   override fun toJsonList(): List<String> = listOf(
     "description", description.toJson(),
   )
+}
+
+data class EncryptionTag(val encryptionSchemes: String) : Tag {
+  override fun toJsonList() = listOf("encryption", encryptionSchemes)
+}
+
+data class NotificationsTag(val notificationTypes: String) : Tag {
+  override fun toJsonList() = listOf("notifications", notificationTypes)
 }
