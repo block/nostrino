@@ -132,6 +132,12 @@ public final class app/cash/nostrino/crypto/CipherText$Companion {
 	public final fun parse (Ljava/lang/String;)Lapp/cash/nostrino/crypto/CipherText;
 }
 
+public abstract interface class app/cash/nostrino/crypto/EncryptionEngine {
+	public abstract fun decrypt (Lapp/cash/nostrino/crypto/SecKey;Lokio/ByteString;Ljava/lang/String;)Ljava/lang/String;
+	public abstract fun encrypt (Lapp/cash/nostrino/crypto/SecKey;Lokio/ByteString;Ljava/lang/String;)Ljava/lang/String;
+	public abstract fun getName ()Ljava/lang/String;
+}
+
 public abstract interface class app/cash/nostrino/crypto/Key {
 	public static final field Companion Lapp/cash/nostrino/crypto/Key$Companion;
 	public abstract fun encoded ()Ljava/lang/String;
@@ -140,6 +146,13 @@ public abstract interface class app/cash/nostrino/crypto/Key {
 
 public final class app/cash/nostrino/crypto/Key$Companion {
 	public final fun parse (Ljava/lang/String;)Lapp/cash/nostrino/crypto/Key;
+}
+
+public final class app/cash/nostrino/crypto/Nip04Engine : app/cash/nostrino/crypto/EncryptionEngine {
+	public static final field INSTANCE Lapp/cash/nostrino/crypto/Nip04Engine;
+	public fun decrypt (Lapp/cash/nostrino/crypto/SecKey;Lokio/ByteString;Ljava/lang/String;)Ljava/lang/String;
+	public fun encrypt (Lapp/cash/nostrino/crypto/SecKey;Lokio/ByteString;Ljava/lang/String;)Ljava/lang/String;
+	public fun getName ()Ljava/lang/String;
 }
 
 public final class app/cash/nostrino/crypto/PubKey : app/cash/nostrino/crypto/Key {
