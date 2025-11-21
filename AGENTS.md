@@ -207,6 +207,7 @@ class FakeRelay(val sent: MutableList<Event> = mutableListOf()) : Relay() {
 6. **Prefer brevity** - Keep tests concise and to the point
 7. **Independent tests** - Each test creates its own test data
 8. **Property-based test data** - Use Kotest's `Arb` generators where applicable
+9. **Add relay integration tests** - When implementing new NIPs or message exchanges, add integration tests in `RelayClientTest.kt` that connect to the real Docker relay at `ws://localhost:7707` to verify end-to-end functionality
 
 ## Multiplatform Considerations
 
