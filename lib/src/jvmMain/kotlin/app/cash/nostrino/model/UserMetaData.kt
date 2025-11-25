@@ -16,7 +16,6 @@
 
 package app.cash.nostrino.model
 
-import com.squareup.moshi.Json
 import app.cash.nostrino.protocol.serde.NostrJson.moshi
 
 /**
@@ -29,7 +28,6 @@ data class UserMetaData(
   val picture: String? = null,
   val nip05: String? = null,
   val banner: String? = null,
-  @Json(name = "display_name")
   val displayName: String? = null,
   val website: String? = null,
   override val tags: List<Tag> = emptyList(),

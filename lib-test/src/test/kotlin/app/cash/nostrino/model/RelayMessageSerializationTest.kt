@@ -27,14 +27,13 @@ import app.cash.nostrino.model.ArbEvent.arbEvent
 import app.cash.nostrino.model.ArbEvent.arbEventMessage
 import app.cash.nostrino.model.ArbEvent.arbNotice
 import app.cash.nostrino.model.ArbEvent.arbRelayMessage
-import app.cash.nostrino.model.ArbEvent.moshi
-import app.cash.nostrino.model.Event
+import app.cash.nostrino.protocol.serde.NostrJson.moshi
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
 import io.kotest.property.checkAll
 
-class NostrMessageAdapterTest : StringSpec({
+class RelayMessageSerializationTest : StringSpec({
 
   "can serde end_of_stored_events" {
     val adapter = moshi.adapter(EndOfStoredEvents::class.java)
