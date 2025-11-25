@@ -29,30 +29,33 @@ This project uses [Hermit](https://cashapp.github.io/hermit/) for consistent too
 ```
 
 ### Essential Commands
+
+**IMPORTANT**: This project uses Hermit. Always use `bin/gradle` instead of `gradlew` or `gradle`.
+
 ```bash
 # Build the entire project (includes tests)
-gradle build
+bin/gradle build
 
 # Run tests only
-gradle test
+bin/gradle test
 
 # Clean build
-gradle clean build
+bin/gradle clean build
 
 # Check for API breaking changes (binary compatibility)
-gradle apiCheck
+bin/gradle apiCheck
 
 # Generate new API dumps after API changes
-gradle apiDump
+bin/gradle apiDump
 
 # Check for dependency updates
-gradle dependencyUpdates -Drevision=release
+bin/gradle dependencyUpdates -Drevision=release
 
 # Update version catalog
-gradle versionCatalogUpdate
+bin/gradle versionCatalogUpdate
 
 # Generate API documentation
-gradle dokkaHtml
+bin/gradle dokkaHtml
 ```
 
 ## Project Structure
@@ -80,6 +83,7 @@ nostrino/
 - **Line Endings**: LF (Unix-style)
 - **Charset**: UTF-8
 - **Final Newline**: Always insert
+- **Copyright Headers**: Not required for new classes
 
 ### Kotlin-Specific
 - **Imports**: No wildcard imports (use explicit imports)
@@ -87,6 +91,10 @@ nostrino/
   - `ij_kotlin_name_count_to_use_star_import_for_members = 2147483647`
 - **Naming**: Follow standard Kotlin conventions
 - **Null Safety**: Leverage Kotlin's null safety features
+- **Function Syntax**: Prefer expression syntax over block body. Avoid early returns when possible
+  - ✅ `fun add(a: Int, b: Int): Int = a + b`
+  - ✅ `fun isValid(x: Int): Boolean = x > 0`
+  - ❌ `fun add(a: Int, b: Int): Int { return a + b }`
 - **Parameters**: Wrap on every item with proper formatting
   - Method parameters: new line after `(`, right paren on new line
   - Call parameters: new line after `(`, right paren on new line
@@ -223,8 +231,8 @@ Nostrino is a Kotlin Multiplatform project. When making changes:
 
 The project uses the Kotlin Binary Compatibility Validator to prevent unintentional API changes.
 
-- **API changes**: Run `gradle apiDump` after making intentional API changes
-- **Before committing**: Always run `gradle apiCheck` to verify no unintentional breaking changes
+- **API changes**: Run `bin/gradle apiDump` after making intentional API changes
+- **Before committing**: Always run `bin/gradle apiCheck` to verify no unintentional breaking changes
 - **API files**: Commit `.api` files alongside code changes
 - **Breaking changes**: Avoid removals and additions in the same change to prevent downstream compatibility issues
 
@@ -257,11 +265,11 @@ The project is published to Maven Central:
 
 1. **Code Style**: Follow the `.editorconfig` settings (automatically enforced by IntelliJ IDEA)
 2. **Testing**: All new features must include comprehensive tests
-3. **Binary Compatibility**: Run `gradle apiCheck` before committing; use `gradle apiDump` for intentional API changes
+3. **Binary Compatibility**: Run `bin/gradle apiCheck` before committing; use `bin/gradle apiDump` for intentional API changes
 4. **No Warnings**: Compiler is configured with `allWarningsAsErrors = true`
 5. **Multiplatform**: Ensure changes work across all target platforms when possible
 6. **Documentation**: Update module documentation and KDoc comments for public APIs
-7. **Build Verification**: Always run `gradle build` before committing to ensure tests pass
+7. **Build Verification**: Always run `bin/gradle build` before committing to ensure tests pass
 8. **Dependencies**: Check existing dependencies before adding new ones
 9. **Licensing**: New runtime dependencies must be licensed with Apache 2.0, MIT, BSD, ISC, or Creative Commons Attribution (test & build dependencies can be more flexible)
 
@@ -273,7 +281,7 @@ The project is published to Maven Central:
 - **Use Arb generators** for test data instead of hard-coded values
 - **Check `.editorconfig`** before making formatting decisions
 - **All tests use JUnit 5** (Jupiter) with Kotest - configured in root `build.gradle.kts`
-- **Binary compatibility matters** - always run `gradle apiCheck` before committing
+- **Binary compatibility matters** - always run `bin/gradle apiCheck` before committing
 - **Multiplatform project** - be mindful of platform-specific vs common code placement
 - **No compiler warnings allowed** - `allWarningsAsErrors = true` is set
 
