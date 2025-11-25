@@ -83,7 +83,7 @@ nostrino/
 - **Line Endings**: LF (Unix-style)
 - **Charset**: UTF-8
 - **Final Newline**: Always insert
-- **Copyright Headers**: Not required for new classes
+- **Copyright Headers**: Required for all new files. Always use the current year (2025) in the copyright year field, not the project start year (2023)
 
 ### Kotlin-Specific
 - **Imports**: No wildcard imports (use explicit imports)
