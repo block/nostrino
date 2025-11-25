@@ -17,6 +17,7 @@ public final class app/cash/nostrino/crypto/ArbKeys {
 
 public final class app/cash/nostrino/model/ArbEvent {
 	public static final field INSTANCE Lapp/cash/nostrino/model/ArbEvent;
+	public final fun getArbAuthChallenge ()Lio/kotest/property/Arb;
 	public final fun getArbCommandResult ()Lio/kotest/property/Arb;
 	public final fun getArbEndOfStoredEvents ()Lio/kotest/property/Arb;
 	public final fun getArbEvent ()Lio/kotest/property/Arb;

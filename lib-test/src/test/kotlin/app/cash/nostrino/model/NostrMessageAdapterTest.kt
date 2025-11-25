@@ -16,11 +16,13 @@
 
 package app.cash.nostrino.model
 
+import app.cash.nostrino.message.relay.AuthChallenge
 import app.cash.nostrino.message.relay.CommandResult
 import app.cash.nostrino.message.relay.EndOfStoredEvents
 import app.cash.nostrino.message.relay.EventMessage
 import app.cash.nostrino.message.relay.Notice
 import app.cash.nostrino.message.relay.RelayMessage
+import app.cash.nostrino.model.ArbEvent.arbAuthChallenge
 import app.cash.nostrino.model.ArbEvent.arbCommandResult
 import app.cash.nostrino.model.ArbEvent.arbEndOfStoredEvents
 import app.cash.nostrino.model.ArbEvent.arbEvent
@@ -59,6 +61,15 @@ class NostrMessageAdapterTest : StringSpec({
     checkAll(arbNotice) {
       val json = adapter.toJson(it)
       json shouldStartWith """["NOTICE","""
+      adapter.fromJson(json) shouldBe it
+    }
+  }
+
+  "can serde auth_challenge" {
+    val adapter = moshi.adapter(AuthChallenge::class.java)
+    checkAll(arbAuthChallenge) {
+      val json = adapter.toJson(it)
+      json shouldStartWith """["AUTH","""
       adapter.fromJson(json) shouldBe it
     }
   }

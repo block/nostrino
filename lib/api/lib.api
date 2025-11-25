@@ -196,6 +196,8 @@ public final class app/cash/nostrino/crypto/SecKeyGenerator$Companion {
 public final class app/cash/nostrino/message/NostrMessageAdapter {
 	public static final field Companion Lapp/cash/nostrino/message/NostrMessageAdapter$Companion;
 	public fun <init> ()V
+	public final fun authChallengeFromJson (Lcom/squareup/moshi/JsonReader;)Lapp/cash/nostrino/message/relay/AuthChallenge;
+	public final fun authChallengeToJson (Lapp/cash/nostrino/message/relay/AuthChallenge;)Ljava/util/List;
 	public final fun byteStringFromJson (Ljava/lang/String;)Lokio/ByteString;
 	public final fun byteStringToJson (Lokio/ByteString;)Ljava/lang/String;
 	public final fun commandResultFromJson (Lcom/squareup/moshi/JsonReader;)Lapp/cash/nostrino/message/relay/CommandResult;
@@ -208,7 +210,7 @@ public final class app/cash/nostrino/message/NostrMessageAdapter {
 	public final fun instantToJson (Ljava/time/Instant;)J
 	public final fun noticeFromJson (Lcom/squareup/moshi/JsonReader;)Lapp/cash/nostrino/message/relay/Notice;
 	public final fun noticeToJson (Lapp/cash/nostrino/message/relay/Notice;)Ljava/util/List;
-	public final fun relayMessageFromJson (Lcom/squareup/moshi/JsonReader;Lcom/squareup/moshi/JsonAdapter;Lcom/squareup/moshi/JsonAdapter;Lcom/squareup/moshi/JsonAdapter;Lcom/squareup/moshi/JsonAdapter;)Lapp/cash/nostrino/message/relay/RelayMessage;
+	public final fun relayMessageFromJson (Lcom/squareup/moshi/JsonReader;Lcom/squareup/moshi/JsonAdapter;Lcom/squareup/moshi/JsonAdapter;Lcom/squareup/moshi/JsonAdapter;Lcom/squareup/moshi/JsonAdapter;Lcom/squareup/moshi/JsonAdapter;)Lapp/cash/nostrino/message/relay/RelayMessage;
 	public final fun relayMessageToJson (Lapp/cash/nostrino/message/relay/RelayMessage;)Ljava/util/List;
 	public final fun tagFromJson (Ljava/util/List;)Lapp/cash/nostrino/model/Tag;
 	public final fun tagToJson (Lapp/cash/nostrino/model/Tag;)Ljava/util/List;
@@ -218,6 +220,17 @@ public final class app/cash/nostrino/message/NostrMessageAdapter {
 
 public final class app/cash/nostrino/message/NostrMessageAdapter$Companion {
 	public final fun getMoshi ()Lcom/squareup/moshi/Moshi;
+}
+
+public final class app/cash/nostrino/message/relay/AuthChallenge : app/cash/nostrino/message/relay/RelayMessage {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lapp/cash/nostrino/message/relay/AuthChallenge;
+	public static synthetic fun copy$default (Lapp/cash/nostrino/message/relay/AuthChallenge;Ljava/lang/String;ILjava/lang/Object;)Lapp/cash/nostrino/message/relay/AuthChallenge;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getChallenge ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class app/cash/nostrino/message/relay/CommandResult : app/cash/nostrino/message/relay/RelayMessage {

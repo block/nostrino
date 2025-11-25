@@ -3,6 +3,9 @@
 
 ## [Unreleased]
 
+### Added
+* Support for AUTH challenge messages as part of NIP-98 (Jem Mawson)
+
 
 ## [0.0.6] - 2023-07-26
 

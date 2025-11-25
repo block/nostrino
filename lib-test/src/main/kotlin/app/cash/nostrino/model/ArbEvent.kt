@@ -21,6 +21,7 @@ import app.cash.nostrino.ArbPrimitive
 import app.cash.nostrino.ArbPrimitive.arbByteString32
 import app.cash.nostrino.ArbPrimitive.arbUUID
 import app.cash.nostrino.message.NostrMessageAdapter
+import app.cash.nostrino.message.relay.AuthChallenge
 import app.cash.nostrino.message.relay.CommandResult
 import app.cash.nostrino.message.relay.EndOfStoredEvents
 import app.cash.nostrino.message.relay.EventMessage
@@ -79,6 +80,7 @@ object ArbEvent {
   val arbSubscriptionId = arbUUID.map { it.toString() }
   val arbEndOfStoredEvents = arbSubscriptionId.map { EndOfStoredEvents(it) }
   val arbNotice = Arb.string().map { Notice(it) }
+  val arbAuthChallenge = Arb.string().map { AuthChallenge(it) }
   val arbCommandResult = Arb.bind(
     arbByteString32,
     Arb.boolean(),
@@ -96,6 +98,7 @@ object ArbEvent {
     arbEndOfStoredEvents,
     arbCommandResult,
     arbEventMessage,
-    arbNotice
+    arbNotice,
+    arbAuthChallenge
   )
 }

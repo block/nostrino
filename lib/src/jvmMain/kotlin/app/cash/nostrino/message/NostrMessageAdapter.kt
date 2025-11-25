@@ -16,6 +16,7 @@
 
 package app.cash.nostrino.message
 
+import app.cash.nostrino.message.relay.AuthChallenge
 import app.cash.nostrino.message.relay.CommandResult
 import app.cash.nostrino.message.relay.EndOfStoredEvents
 import app.cash.nostrino.message.relay.EventMessage
@@ -45,7 +46,8 @@ class NostrMessageAdapter {
     eoseDelegate: JsonAdapter<EndOfStoredEvents>,
     commandDelegate: JsonAdapter<CommandResult>,
     noticeDelegate: JsonAdapter<Notice>,
-    eventDelegate: JsonAdapter<EventMessage>
+    eventDelegate: JsonAdapter<EventMessage>,
+    authDelegate: JsonAdapter<AuthChallenge>
   ): RelayMessage {
     val peekyReader = reader.peekJson()
     peekyReader.beginArray()
@@ -54,6 +56,7 @@ class NostrMessageAdapter {
       "OK" -> commandDelegate.fromJson(reader)!!
       "EVENT" -> eventDelegate.fromJson(reader)!!
       "NOTICE" -> noticeDelegate.fromJson(reader)!!
+      "AUTH" -> authDelegate.fromJson(reader)!!
       else -> error("Unsupported message type: $messageType")
     }
   }
@@ -64,6 +67,7 @@ class NostrMessageAdapter {
     is EventMessage -> eventMessageToJson(message)
     is Notice -> noticeToJson(message)
     is EndOfStoredEvents -> eoseToJson(message)
+    is AuthChallenge -> authChallengeToJson(message)
     else -> error("Unsupported message type: ${message::class.qualifiedName}")
   }
 
@@ -123,6 +127,16 @@ class NostrMessageAdapter {
 
   @ToJson
   fun eventMessageToJson(eventMessage: EventMessage) = listOf("EVENT", eventMessage.subscriptionId, eventMessage.event)
+
+  @FromJson
+  fun authChallengeFromJson(reader: JsonReader): AuthChallenge = reader.run {
+    beginArray()
+    require(nextString() == "AUTH")
+    AuthChallenge(nextString()).also { endArray() }
+  }
+
+  @ToJson
+  fun authChallengeToJson(authChallenge: AuthChallenge) = listOf("AUTH", authChallenge.challenge)
 
   @FromJson
   fun textNoteFromJson(text: String) = TextNote(text)
