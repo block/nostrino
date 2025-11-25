@@ -720,10 +720,16 @@ public final class app/cash/nostrino/model/ZapRequest$Companion {
 
 public final class app/cash/nostrino/protocol/serde/ModelAdapter {
 	public fun <init> ()V
+	public final fun eventFromJson (Lcom/squareup/moshi/JsonReader;)Lapp/cash/nostrino/model/Event;
+	public final fun eventToJson (Lcom/squareup/moshi/JsonWriter;Lapp/cash/nostrino/model/Event;)V
+	public final fun filterFromJson (Lcom/squareup/moshi/JsonReader;)Lapp/cash/nostrino/model/Filter;
+	public final fun filterToJson (Lcom/squareup/moshi/JsonWriter;Lapp/cash/nostrino/model/Filter;)V
 	public final fun tagFromJson (Ljava/util/List;)Lapp/cash/nostrino/model/Tag;
 	public final fun tagToJson (Lapp/cash/nostrino/model/Tag;)Ljava/util/List;
 	public final fun textNoteFromJson (Ljava/lang/String;)Lapp/cash/nostrino/model/TextNote;
 	public final fun textNoteToJson (Lapp/cash/nostrino/model/TextNote;)Ljava/lang/String;
+	public final fun userMetaDataFromJson (Lcom/squareup/moshi/JsonReader;)Lapp/cash/nostrino/model/UserMetaData;
+	public final fun userMetaDataToJson (Lcom/squareup/moshi/JsonWriter;Lapp/cash/nostrino/model/UserMetaData;)V
 }
 
 public final class app/cash/nostrino/protocol/serde/NostrJson {
