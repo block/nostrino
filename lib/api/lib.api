@@ -200,24 +200,6 @@ public final class app/cash/nostrino/crypto/SecKeyGenerator$Companion {
 public final class app/cash/nostrino/message/NostrMessageAdapter {
 	public static final field Companion Lapp/cash/nostrino/message/NostrMessageAdapter$Companion;
 	public fun <init> ()V
-	public final fun byteStringFromJson (Ljava/lang/String;)Lokio/ByteString;
-	public final fun byteStringToJson (Lokio/ByteString;)Ljava/lang/String;
-	public final fun commandResultFromJson (Lcom/squareup/moshi/JsonReader;)Lapp/cash/nostrino/message/relay/CommandResult;
-	public final fun commandResultToJson (Lapp/cash/nostrino/message/relay/CommandResult;)Ljava/util/List;
-	public final fun eoseFromJson (Lcom/squareup/moshi/JsonReader;)Lapp/cash/nostrino/message/relay/EndOfStoredEvents;
-	public final fun eoseToJson (Lapp/cash/nostrino/message/relay/EndOfStoredEvents;)Ljava/util/List;
-	public final fun eventMessageFromJson (Lcom/squareup/moshi/JsonReader;Lcom/squareup/moshi/JsonAdapter;)Lapp/cash/nostrino/message/relay/EventMessage;
-	public final fun eventMessageToJson (Lapp/cash/nostrino/message/relay/EventMessage;)Ljava/util/List;
-	public final fun instantFromJson (J)Ljava/time/Instant;
-	public final fun instantToJson (Ljava/time/Instant;)J
-	public final fun noticeFromJson (Lcom/squareup/moshi/JsonReader;)Lapp/cash/nostrino/message/relay/Notice;
-	public final fun noticeToJson (Lapp/cash/nostrino/message/relay/Notice;)Ljava/util/List;
-	public final fun relayMessageFromJson (Lcom/squareup/moshi/JsonReader;Lcom/squareup/moshi/JsonAdapter;Lcom/squareup/moshi/JsonAdapter;Lcom/squareup/moshi/JsonAdapter;Lcom/squareup/moshi/JsonAdapter;)Lapp/cash/nostrino/message/relay/RelayMessage;
-	public final fun relayMessageToJson (Lapp/cash/nostrino/message/relay/RelayMessage;)Ljava/util/List;
-	public final fun tagFromJson (Ljava/util/List;)Lapp/cash/nostrino/model/Tag;
-	public final fun tagToJson (Lapp/cash/nostrino/model/Tag;)Ljava/util/List;
-	public final fun textNoteFromJson (Ljava/lang/String;)Lapp/cash/nostrino/model/TextNote;
-	public final fun textNoteToJson (Lapp/cash/nostrino/model/TextNote;)Ljava/lang/String;
 }
 
 public final class app/cash/nostrino/message/NostrMessageAdapter$Companion {
@@ -734,5 +716,40 @@ public final class app/cash/nostrino/model/ZapRequest : app/cash/nostrino/model/
 }
 
 public final class app/cash/nostrino/model/ZapRequest$Companion {
+}
+
+public final class app/cash/nostrino/protocol/serde/ModelAdapter {
+	public fun <init> ()V
+	public final fun tagFromJson (Ljava/util/List;)Lapp/cash/nostrino/model/Tag;
+	public final fun tagToJson (Lapp/cash/nostrino/model/Tag;)Ljava/util/List;
+	public final fun textNoteFromJson (Ljava/lang/String;)Lapp/cash/nostrino/model/TextNote;
+	public final fun textNoteToJson (Lapp/cash/nostrino/model/TextNote;)Ljava/lang/String;
+}
+
+public final class app/cash/nostrino/protocol/serde/NostrJson {
+	public static final field INSTANCE Lapp/cash/nostrino/protocol/serde/NostrJson;
+	public final fun getMoshi ()Lcom/squareup/moshi/Moshi;
+}
+
+public final class app/cash/nostrino/protocol/serde/PrimitiveAdapter {
+	public fun <init> ()V
+	public final fun byteStringFromJson (Ljava/lang/String;)Lokio/ByteString;
+	public final fun byteStringToJson (Lokio/ByteString;)Ljava/lang/String;
+	public final fun instantFromJson (J)Ljava/time/Instant;
+	public final fun instantToJson (Ljava/time/Instant;)J
+}
+
+public final class app/cash/nostrino/protocol/serde/RelayMessageAdapter {
+	public fun <init> ()V
+	public final fun commandResultFromJson (Lcom/squareup/moshi/JsonReader;)Lapp/cash/nostrino/message/relay/CommandResult;
+	public final fun commandResultToJson (Lapp/cash/nostrino/message/relay/CommandResult;)Ljava/util/List;
+	public final fun eoseFromJson (Lcom/squareup/moshi/JsonReader;)Lapp/cash/nostrino/message/relay/EndOfStoredEvents;
+	public final fun eoseToJson (Lapp/cash/nostrino/message/relay/EndOfStoredEvents;)Ljava/util/List;
+	public final fun eventMessageFromJson (Lcom/squareup/moshi/JsonReader;Lcom/squareup/moshi/JsonAdapter;)Lapp/cash/nostrino/message/relay/EventMessage;
+	public final fun eventMessageToJson (Lapp/cash/nostrino/message/relay/EventMessage;)Ljava/util/List;
+	public final fun noticeFromJson (Lcom/squareup/moshi/JsonReader;)Lapp/cash/nostrino/message/relay/Notice;
+	public final fun noticeToJson (Lapp/cash/nostrino/message/relay/Notice;)Ljava/util/List;
+	public final fun relayMessageFromJson (Lcom/squareup/moshi/JsonReader;Lcom/squareup/moshi/JsonAdapter;Lcom/squareup/moshi/JsonAdapter;Lcom/squareup/moshi/JsonAdapter;Lcom/squareup/moshi/JsonAdapter;)Lapp/cash/nostrino/message/relay/RelayMessage;
+	public final fun relayMessageToJson (Lapp/cash/nostrino/message/relay/RelayMessage;)Ljava/util/List;
 }
 

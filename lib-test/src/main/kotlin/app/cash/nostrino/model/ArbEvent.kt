@@ -20,13 +20,11 @@ package app.cash.nostrino.model
 import app.cash.nostrino.ArbPrimitive
 import app.cash.nostrino.ArbPrimitive.arbByteString32
 import app.cash.nostrino.ArbPrimitive.arbUUID
-import app.cash.nostrino.message.NostrMessageAdapter
 import app.cash.nostrino.message.relay.CommandResult
 import app.cash.nostrino.message.relay.EndOfStoredEvents
 import app.cash.nostrino.message.relay.EventMessage
 import app.cash.nostrino.message.relay.Notice
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import app.cash.nostrino.protocol.serde.NostrJson
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.bind
 import io.kotest.property.arbitrary.boolean
@@ -36,10 +34,7 @@ import io.kotest.property.arbitrary.orNull
 import io.kotest.property.arbitrary.string
 
 object ArbEvent {
-  val moshi = Moshi.Builder()
-    .add(NostrMessageAdapter())
-    .addLast(KotlinJsonAdapterFactory())
-    .build()
+  val moshi = NostrJson.moshi
 
   val arbEventId by lazy { arbByteString32.map { it.hex() } }
 
