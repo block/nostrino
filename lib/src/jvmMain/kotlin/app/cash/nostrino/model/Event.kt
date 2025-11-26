@@ -18,7 +18,6 @@ package app.cash.nostrino.model
 
 import app.cash.nostrino.crypto.CipherText
 import app.cash.nostrino.protocol.serde.NostrJson.moshi
-import com.squareup.moshi.Json
 import fr.acinq.secp256k1.Secp256k1
 import okio.ByteString
 import java.time.Instant
@@ -26,9 +25,7 @@ import java.time.Instant
 /** The primitive type understood by relays, as per nip-01 */
 data class Event(
   val id: ByteString,
-  @Json(name = "pubkey")
   val pubKey: ByteString,
-  @Json(name = "created_at")
   val createdAt: Instant,
   val kind: Int,
   val tags: List<List<String>>,

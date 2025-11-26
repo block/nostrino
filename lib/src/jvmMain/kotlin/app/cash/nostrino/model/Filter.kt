@@ -17,7 +17,6 @@
 package app.cash.nostrino.model
 
 import app.cash.nostrino.crypto.PubKey
-import com.squareup.moshi.Json
 import okio.ByteString
 import java.time.Instant
 import kotlin.time.Duration.Companion.hours
@@ -31,11 +30,8 @@ data class Filter(
   val since: Instant? = null,
   val authors: Set<String>? = null,
   val kinds: Set<Int>? = null,
-  @Json(name = "#e")
   val eTags: Set<String>? = null,
-  @Json(name = "#p")
   val pTags: Set<String>? = null,
-  @Json(name = "#t")
   val tTags: Set<String>? = null,
   val limit: Int? = null
 ) {
