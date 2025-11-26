@@ -17,7 +17,7 @@
 package app.cash.nostrino.model
 
 import com.squareup.moshi.Json
-import app.cash.nostrino.message.NostrMessageAdapter.Companion.moshi
+import app.cash.nostrino.protocol.serde.NostrJson.moshi
 
 /**
  * User metadata (profile). Event kind 0, as defined in

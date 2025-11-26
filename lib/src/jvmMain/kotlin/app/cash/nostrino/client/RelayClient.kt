@@ -37,7 +37,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import app.cash.nostrino.message.NostrMessageAdapter.Companion.moshi
+import app.cash.nostrino.protocol.serde.NostrJson.moshi
 import app.cash.nostrino.message.relay.EventMessage
 import app.cash.nostrino.message.relay.RelayMessage
 import app.cash.nostrino.model.Event

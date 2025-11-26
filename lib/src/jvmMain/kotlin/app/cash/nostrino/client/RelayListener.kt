@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.runBlocking
-import app.cash.nostrino.message.NostrMessageAdapter.Companion.moshi
+import app.cash.nostrino.protocol.serde.NostrJson.moshi
 import app.cash.nostrino.message.relay.RelayMessage
 import mu.KotlinLogging
 import okhttp3.Response
