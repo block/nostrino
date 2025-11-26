@@ -17,8 +17,6 @@
 
 package app.cash.nostrino.crypto
 
-import fr.acinq.secp256k1.Hex
-import fr.acinq.secp256k1.Secp256k1
 import okio.ByteString
 import okio.ByteString.Companion.toByteString
 
@@ -39,17 +37,17 @@ data class SecKey(val key: ByteString) : Key {
 
   /** the public key derived from this secret key */
   val pubKey by lazy {
-    PubKey(Secp256k1.pubKeyCompress(Secp256k1.pubkeyCreate(key.toByteArray())).copyOfRange(1, 33).toByteString())
+    PubKey(Secp256k1Operations.pubKeyCompress(Secp256k1Operations.pubkeyCreate(key.toByteArray())).copyOfRange(1, 33).toByteString())
   }
 
   /** sign any arbitrary payload with this key */
   fun sign(payload: ByteString): ByteString =
-    Secp256k1.signSchnorr(payload.toByteArray(), key.toByteArray(), null).toByteString()
+    Secp256k1Operations.signSchnorr(payload.toByteArray(), key.toByteArray(), null).toByteString()
 
   /** Find the point of shared secret between this sec key and a pub key */
   fun sharedSecretWith(pub: PubKey): ByteArray =
-    Secp256k1.pubKeyTweakMul(
-      pubkey = Hex.decode("02") + pub.key.toByteArray(),
+    Secp256k1Operations.pubKeyTweakMul(
+      pubKey = byteArrayOf(0x02) + pub.key.toByteArray(),
       tweak = key.toByteArray()
     ).copyOfRange(1, 33)
 
