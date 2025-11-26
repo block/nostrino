@@ -17,8 +17,8 @@
 package app.cash.nostrino.model
 
 import app.cash.nostrino.crypto.CipherText
+import app.cash.nostrino.crypto.Secp256k1Operations
 import app.cash.nostrino.protocol.serde.NostrJson.moshi
-import fr.acinq.secp256k1.Secp256k1
 import okio.ByteString
 import java.time.Instant
 
@@ -37,7 +37,7 @@ data class Event(
    * Valid is `true` if the event has a valid signature.
    */
   val validSignature: Boolean by lazy {
-    Secp256k1.verifySchnorr(sig.toByteArray(), id.toByteArray(), pubKey.toByteArray())
+    Secp256k1Operations.verifySchnorr(sig.toByteArray(), id.toByteArray(), pubKey.toByteArray())
   }
 
   /**
