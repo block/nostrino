@@ -25,7 +25,6 @@ import app.cash.nostrino.model.Filter
 import app.cash.nostrino.model.Reaction
 import app.cash.nostrino.model.TextNote
 import app.cash.nostrino.model.UserMetaData
-import java.util.UUID
 
 abstract class Relay {
 
@@ -41,13 +40,13 @@ abstract class Relay {
   /** Create a new subscription with exactly one filter */
   fun subscribe(
     filter: Filter,
-    subscription: Subscription = Subscription(UUID.randomUUID().toString())
+    subscription: Subscription = Subscription(randomSubscriptionId())
   ) = subscribe(setOf(filter), subscription)
 
   /** Create a new subscription with zero to many filters */
   abstract fun subscribe(
     filters: Set<Filter>,
-    subscription: Subscription = Subscription(UUID.randomUUID().toString())
+    subscription: Subscription = Subscription(randomSubscriptionId())
   ): Subscription
 
   /** Unsubscribe from a subscription */
