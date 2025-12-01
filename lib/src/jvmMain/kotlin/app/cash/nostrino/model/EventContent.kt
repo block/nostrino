@@ -17,7 +17,7 @@
 package app.cash.nostrino.model
 
 import app.cash.nostrino.crypto.SecKey
-import app.cash.nostrino.message.NostrMessageAdapter.Companion.moshi
+import app.cash.nostrino.protocol.serde.NostrJson.moshi
 import com.squareup.moshi.JsonAdapter
 import okio.ByteString.Companion.encodeUtf8
 import java.time.Instant
