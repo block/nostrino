@@ -40,12 +40,14 @@ class RelayMessageAdapter {
   ): RelayMessage {
     val peekyReader = reader.peekJson()
     peekyReader.beginArray()
-    return when (val messageType = peekyReader.nextString()) {
-      "EOSE" -> eoseDelegate.fromJson(reader)!!
-      "OK" -> commandDelegate.fromJson(reader)!!
-      "EVENT" -> eventDelegate.fromJson(reader)!!
-      "NOTICE" -> noticeDelegate.fromJson(reader)!!
-      else -> error("Unsupported message type: $messageType")
+    val messageTypeString = peekyReader.nextString()
+    val messageType = runCatching { RelayMessageType.valueOf(messageTypeString) }
+      .getOrElse { error("Unsupported message type: $messageTypeString") }
+    return when (messageType) {
+      RelayMessageType.EOSE -> eoseDelegate.fromJson(reader)!!
+      RelayMessageType.OK -> commandDelegate.fromJson(reader)!!
+      RelayMessageType.EVENT -> eventDelegate.fromJson(reader)!!
+      RelayMessageType.NOTICE -> noticeDelegate.fromJson(reader)!!
     }
   }
 
