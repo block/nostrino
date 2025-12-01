@@ -19,9 +19,6 @@ package app.cash.nostrino.crypto
 import okio.ByteString
 import okio.ByteString.Companion.decodeBase64
 import java.lang.NullPointerException
-import javax.crypto.Cipher
-import javax.crypto.spec.IvParameterSpec
-import javax.crypto.spec.SecretKeySpec
 
 /** Encrypted text. Contains the ciphertext bytes and an initialisation vector to be used during the AES decryption. */
 data class CipherText(
@@ -30,15 +27,9 @@ data class CipherText(
 ) {
   override fun toString() = "${cipherText.base64()}?iv=${iv.base64()}"
 
-  /**
-   * Find the plain text message from this cipher text. It is necessary to provide the PubKey of the author, and the
-   * SecKey of the recipient.
-   */
   fun decipher(from: PubKey, to: SecKey): String {
     val sharedSecret = to.sharedSecretWith(from)
-    val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
-    cipher.init(Cipher.DECRYPT_MODE, SecretKeySpec(sharedSecret, "AES"), IvParameterSpec(iv.toByteArray()))
-    return String(cipher.doFinal(cipherText.toByteArray()))
+    return String(AesCipher.decrypt(cipherText.toByteArray(), sharedSecret, iv.toByteArray()))
   }
 
   companion object {

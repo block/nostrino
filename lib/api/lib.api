@@ -98,6 +98,13 @@ public final class app/cash/nostrino/client/SubscriptionIdKt {
 	public static final fun randomSubscriptionId ()Ljava/lang/String;
 }
 
+public final class app/cash/nostrino/crypto/AesCipher {
+	public static final field INSTANCE Lapp/cash/nostrino/crypto/AesCipher;
+	public final fun decrypt ([B[B[B)[B
+	public final fun encrypt ([B[B[B)[B
+	public final fun generateIv ()[B
+}
+
 public final class app/cash/nostrino/crypto/Bech32Serde {
 	public static final field INSTANCE Lapp/cash/nostrino/crypto/Bech32Serde;
 	public static final fun decodeBytes (Ljava/lang/String;Z)Lkotlin/Triple;
@@ -136,6 +143,12 @@ public final class app/cash/nostrino/crypto/CipherText$Companion {
 	public final fun parse (Ljava/lang/String;)Lapp/cash/nostrino/crypto/CipherText;
 }
 
+public final class app/cash/nostrino/crypto/EcdhProvider {
+	public static final field INSTANCE Lapp/cash/nostrino/crypto/EcdhProvider;
+	public final fun derivePublicKey ([B)[B
+	public final fun sharedSecret ([B[B)[B
+}
+
 public abstract interface class app/cash/nostrino/crypto/Key {
 	public static final field Companion Lapp/cash/nostrino/crypto/Key$Companion;
 	public abstract fun encoded ()Ljava/lang/String;
@@ -164,6 +177,12 @@ public final class app/cash/nostrino/crypto/PubKey : app/cash/nostrino/crypto/Ke
 
 public final class app/cash/nostrino/crypto/PubKey$Companion {
 	public final fun parse (Ljava/lang/String;)Lapp/cash/nostrino/crypto/PubKey;
+}
+
+public final class app/cash/nostrino/crypto/SchnorrSigner {
+	public static final field INSTANCE Lapp/cash/nostrino/crypto/SchnorrSigner;
+	public final fun sign ([B[B)[B
+	public final fun verify ([B[B[B)Z
 }
 
 public final class app/cash/nostrino/crypto/SecKey : app/cash/nostrino/crypto/Key {
