@@ -16,14 +16,11 @@
 
 package app.cash.nostrino.model
 
+import app.cash.nostrino.crypto.AesCipher
 import app.cash.nostrino.crypto.CipherText
 import app.cash.nostrino.crypto.PubKey
 import app.cash.nostrino.crypto.SecKey
 import okio.ByteString.Companion.toByteString
-import java.security.SecureRandom
-import javax.crypto.Cipher
-import javax.crypto.spec.IvParameterSpec
-import javax.crypto.spec.SecretKeySpec
 
 /**
  * An encrypted direct message. Event kind 4, as defined in
@@ -41,7 +38,6 @@ data class EncryptedDm(
 
   override fun toJsonString() = cipherText.toString()
 
-  /** Providing the public key of the sender and the secret key of the recipient, decode this message */
   fun decipher(from: PubKey, to: SecKey): String = cipherText.decipher(from, to)
 
   companion object {
@@ -50,11 +46,7 @@ data class EncryptedDm(
 }
 
 fun SecKey.encrypt(to: PubKey, plainText: String): CipherText {
-  val random = SecureRandom()
-  val iv = ByteArray(16)
-  random.nextBytes(iv)
-  val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
-  cipher.init(Cipher.ENCRYPT_MODE, SecretKeySpec(sharedSecretWith(to), "AES"), IvParameterSpec(iv))
-  val encrypted = cipher.doFinal(plainText.toByteArray())
+  val iv = AesCipher.generateIv()
+  val encrypted = AesCipher.encrypt(plainText.toByteArray(), sharedSecretWith(to), iv)
   return CipherText(encrypted.toByteString(), iv.toByteString())
 }
