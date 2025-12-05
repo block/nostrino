@@ -1,13 +1,13 @@
 rootProject.name = "nostrino"
 
 plugins {
-  `gradle-enterprise`
+  id("com.gradle.develocity") version "3.18.2"
 }
 
-gradleEnterprise {
+develocity {
   buildScan {
-    termsOfServiceUrl = "https://gradle.com/terms-of-service"
-    termsOfServiceAgree = "yes"
+    termsOfUseUrl = "https://gradle.com/terms-of-service"
+    termsOfUseAgree = "yes"
   }
 }
 
