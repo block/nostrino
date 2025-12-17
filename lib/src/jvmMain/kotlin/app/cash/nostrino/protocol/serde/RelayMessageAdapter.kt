@@ -63,19 +63,19 @@ class RelayMessageAdapter {
   @FromJson
   fun eoseFromJson(reader: JsonReader): EndOfStoredEvents {
     reader.beginArray()
-    require(reader.nextString() == "EOSE")
+    require(reader.nextString() == RelayMessageType.EOSE.name)
     val eose = EndOfStoredEvents(reader.nextString())
     reader.endArray()
     return eose
   }
 
   @ToJson
-  fun eoseToJson(eose: EndOfStoredEvents) = listOf("EOSE", eose.subscriptionId)
+  fun eoseToJson(eose: EndOfStoredEvents) = listOf(RelayMessageType.EOSE.name, eose.subscriptionId)
 
   @FromJson
   fun commandResultFromJson(reader: JsonReader): CommandResult {
     reader.beginArray()
-    require(reader.nextString() == "OK")
+    require(reader.nextString() == RelayMessageType.OK.name)
     val result = CommandResult(
       eventId = reader.nextString().decodeHex(),
       success = reader.nextBoolean(),
@@ -87,19 +87,19 @@ class RelayMessageAdapter {
 
   @ToJson
   fun commandResultToJson(cr: CommandResult) =
-    listOfNotNull("OK", cr.eventId.hex(), cr.success, cr.message)
+    listOfNotNull(RelayMessageType.OK.name, cr.eventId.hex(), cr.success, cr.message)
 
   @FromJson
   fun noticeFromJson(reader: JsonReader): Notice {
     reader.beginArray()
-    require(reader.nextString() == "NOTICE")
+    require(reader.nextString() == RelayMessageType.NOTICE.name)
     val notice = Notice(reader.nextString())
     reader.endArray()
     return notice
   }
 
   @ToJson
-  fun noticeToJson(notice: Notice) = listOf("NOTICE", notice.message)
+  fun noticeToJson(notice: Notice) = listOf(RelayMessageType.NOTICE.name, notice.message)
 
   @FromJson
   fun eventMessageFromJson(
@@ -107,7 +107,7 @@ class RelayMessageAdapter {
     delegate: JsonAdapter<Event>
   ): EventMessage {
     reader.beginArray()
-    require(reader.nextString() == "EVENT")
+    require(reader.nextString() == RelayMessageType.EVENT.name)
     val subscriptionId = reader.nextString()
     val event = delegate.fromJson(reader)!!
     reader.endArray()
@@ -115,5 +115,5 @@ class RelayMessageAdapter {
   }
 
   @ToJson
-  fun eventMessageToJson(eventMessage: EventMessage) = listOf("EVENT", eventMessage.subscriptionId, eventMessage.event)
+  fun eventMessageToJson(eventMessage: EventMessage) = listOf(RelayMessageType.EVENT.name, eventMessage.subscriptionId, eventMessage.event)
 }

@@ -37,6 +37,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import app.cash.nostrino.protocol.serde.ClientMessageType
 import app.cash.nostrino.protocol.serde.NostrJson.moshi
 import app.cash.nostrino.message.relay.EventMessage
 import app.cash.nostrino.message.relay.RelayMessage
@@ -96,17 +97,17 @@ class RelayClient(
 
   override fun send(event: Event) {
     logger.info { "Enqueuing: ${event.id} [relay=$url]" }
-    send(listOf("EVENT", event))
+    send(listOf(ClientMessageType.EVENT.name, event))
   }
 
   override fun subscribe(filters: Set<Filter>, subscription: Subscription): Subscription = subscription.also {
-    send(listOf<Any>("REQ", it.id).plus(filters.toList()))
+    send(listOf<Any>(ClientMessageType.REQ.name, it.id).plus(filters.toList()))
     subscriptions[subscription] = filters
   }
 
   override fun unsubscribe(subscription: Subscription) {
     subscriptions.remove(subscription)
-    send(listOf("CLOSE", subscription.id))
+    send(listOf(ClientMessageType.CLOSE.name, subscription.id))
   }
 
   override val allEvents: Flow<Event> by lazy { relayMessages.filterIsInstance<EventMessage>().map { it.event } }
