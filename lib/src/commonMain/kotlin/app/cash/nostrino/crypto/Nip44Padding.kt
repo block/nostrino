@@ -19,10 +19,25 @@ package app.cash.nostrino.crypto
 import kotlin.math.floor
 import kotlin.math.log2
 
+/**
+ * NIP-44 padding scheme for encrypted messages.
+ *
+ * Implements the padding algorithm specified in NIP-44 to prevent
+ * plaintext length leakage. Pads messages to specific boundaries
+ * that obscure the original message length.
+ *
+ * @see <a href="https://github.com/nostr-protocol/nips/blob/master/44.md">NIP-44</a>
+ */
 object Nip44Padding {
   private const val MIN_PLAINTEXT_SIZE = 1
   private const val MAX_PLAINTEXT_SIZE = 65535
 
+  /**
+   * Calculates the padded length for a given plaintext length.
+   *
+   * @param unpadded The unpadded plaintext length in bytes
+   * @return The padded length according to NIP-44 padding scheme
+   */
   fun calcPaddedLen(unpadded: Int): Int {
     require(unpadded in MIN_PLAINTEXT_SIZE..MAX_PLAINTEXT_SIZE) {
       "Plaintext length must be between $MIN_PLAINTEXT_SIZE and $MAX_PLAINTEXT_SIZE bytes"
@@ -36,6 +51,15 @@ object Nip44Padding {
     return chunk * ((unpadded - 1) / chunk + 1)
   }
 
+  /**
+   * Pads plaintext according to NIP-44 padding scheme.
+   *
+   * Prepends a 2-byte big-endian length prefix and appends zero-padding
+   * to reach the calculated padded length.
+   *
+   * @param plaintext The plaintext string to pad
+   * @return Padded byte array (length prefix + plaintext + zero padding)
+   */
   fun pad(plaintext: String): ByteArray {
     val unpadded = plaintext.encodeToByteArray()
     val unpaddedLen = unpadded.size
@@ -55,6 +79,15 @@ object Nip44Padding {
     return result
   }
 
+  /**
+   * Removes padding from NIP-44 padded data.
+   *
+   * Validates the padding structure and extracts the original plaintext.
+   *
+   * @param padded The padded byte array
+   * @return The original plaintext string
+   * @throws IllegalArgumentException if padding is invalid
+   */
   fun unpad(padded: ByteArray): String {
     require(padded.size >= 2) { "Padded data must be at least 2 bytes" }
 

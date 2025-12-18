@@ -16,7 +16,32 @@
 
 package app.cash.nostrino.crypto
 
+/**
+ * ChaCha20 stream cipher implementation.
+ *
+ * ChaCha20 is a high-speed stream cipher designed by Daniel J. Bernstein.
+ * Used in NIP-44 for encrypting/decrypting Nostr messages.
+ *
+ * @see <a href="https://github.com/nostr-protocol/nips/blob/master/44.md">NIP-44</a>
+ */
 expect object ChaCha20 {
+  /**
+   * Encrypts plaintext using ChaCha20.
+   *
+   * @param plaintext The data to encrypt
+   * @param key The 32-byte encryption key
+   * @param nonce The 12-byte nonce
+   * @return The encrypted ciphertext
+   */
   fun encrypt(plaintext: ByteArray, key: ByteArray, nonce: ByteArray): ByteArray
+
+  /**
+   * Decrypts ciphertext using ChaCha20.
+   *
+   * @param ciphertext The encrypted data
+   * @param key The 32-byte decryption key
+   * @param nonce The 12-byte nonce
+   * @return The decrypted plaintext
+   */
   fun decrypt(ciphertext: ByteArray, key: ByteArray, nonce: ByteArray): ByteArray
 }
