@@ -737,6 +737,15 @@ public final class app/cash/nostrino/model/ZapRequest : app/cash/nostrino/model/
 public final class app/cash/nostrino/model/ZapRequest$Companion {
 }
 
+public final class app/cash/nostrino/protocol/serde/ClientMessageType : java/lang/Enum {
+	public static final field CLOSE Lapp/cash/nostrino/protocol/serde/ClientMessageType;
+	public static final field EVENT Lapp/cash/nostrino/protocol/serde/ClientMessageType;
+	public static final field REQ Lapp/cash/nostrino/protocol/serde/ClientMessageType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lapp/cash/nostrino/protocol/serde/ClientMessageType;
+	public static fun values ()[Lapp/cash/nostrino/protocol/serde/ClientMessageType;
+}
+
 public final class app/cash/nostrino/protocol/serde/ModelAdapter {
 	public fun <init> ()V
 	public final fun tagFromJson (Ljava/util/List;)Lapp/cash/nostrino/model/Tag;
