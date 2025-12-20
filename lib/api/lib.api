@@ -124,6 +124,12 @@ public final class app/cash/nostrino/crypto/Bech32Serde$Encoding : java/lang/Enu
 	public static fun values ()[Lapp/cash/nostrino/crypto/Bech32Serde$Encoding;
 }
 
+public final class app/cash/nostrino/crypto/ChaCha20 {
+	public static final field INSTANCE Lapp/cash/nostrino/crypto/ChaCha20;
+	public final fun decrypt ([B[B[B)[B
+	public final fun encrypt ([B[B[B)[B
+}
+
 public final class app/cash/nostrino/crypto/CipherText {
 	public static final field Companion Lapp/cash/nostrino/crypto/CipherText$Companion;
 	public fun <init> (Lokio/ByteString;Lokio/ByteString;)V
@@ -149,6 +155,19 @@ public final class app/cash/nostrino/crypto/EcdhProvider {
 	public final fun sharedSecret ([B[B)[B
 }
 
+public final class app/cash/nostrino/crypto/Hkdf {
+	public static final field INSTANCE Lapp/cash/nostrino/crypto/Hkdf;
+	public final fun expand ([B[BI)[B
+	public final fun extract ([B[B)[B
+}
+
+public final class app/cash/nostrino/crypto/HmacSha256 {
+	public static final field INSTANCE Lapp/cash/nostrino/crypto/HmacSha256;
+	public final fun compute ([B[B)[B
+	public final fun computeWithAad ([B[B[B)[B
+	public final fun isEqualConstantTime ([B[B)Z
+}
+
 public abstract interface class app/cash/nostrino/crypto/Key {
 	public static final field Companion Lapp/cash/nostrino/crypto/Key$Companion;
 	public abstract fun encoded ()Ljava/lang/String;
@@ -157,6 +176,13 @@ public abstract interface class app/cash/nostrino/crypto/Key {
 
 public final class app/cash/nostrino/crypto/Key$Companion {
 	public final fun parse (Ljava/lang/String;)Lapp/cash/nostrino/crypto/Key;
+}
+
+public final class app/cash/nostrino/crypto/Nip44Padding {
+	public static final field INSTANCE Lapp/cash/nostrino/crypto/Nip44Padding;
+	public final fun calcPaddedLen (I)I
+	public final fun pad (Ljava/lang/String;)[B
+	public final fun unpad ([B)Ljava/lang/String;
 }
 
 public final class app/cash/nostrino/crypto/PubKey : app/cash/nostrino/crypto/Key {
