@@ -3,6 +3,9 @@
 
 ## [Unreleased]
 
+### Added
+* NIP-44 Versioned Encrypted Direct Messages with ChaCha20 and HMAC-SHA256 (Jem Mawson)
+
 
 ## [0.0.6] - 2023-07-26
 
