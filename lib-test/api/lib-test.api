@@ -53,3 +53,12 @@ public final class app/cash/nostrino/model/ArbTags {
 	public final fun getArbTag ()Lio/kotest/property/Arb;
 }
 
+public final class app/cash/nostrino/model/ArbWalletConnect {
+	public static final field INSTANCE Lapp/cash/nostrino/model/ArbWalletConnect;
+	public final fun getArbEncryptionMethod ()Lio/kotest/property/Arb;
+	public final fun getArbWalletError ()Lio/kotest/property/Arb;
+	public final fun getArbWalletNotification ()Lio/kotest/property/Arb;
+	public final fun getArbWalletRequest ()Lio/kotest/property/Arb;
+	public final fun getArbWalletResponse ()Lio/kotest/property/Arb;
+}
+
