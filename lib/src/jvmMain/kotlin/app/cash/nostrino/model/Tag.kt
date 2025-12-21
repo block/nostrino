@@ -45,6 +45,9 @@ sealed interface Tag {
           ZapReceiptDescriptionTag(event)
         }
 
+        "encryption" -> EncryptionTag(value)
+        "notifications" -> NotificationsTag(values)
+        "d" -> DTag(value)
         else -> throw IllegalArgumentException("Invalid tag format: $strings")
       }
     }
@@ -87,4 +90,31 @@ data class ZapReceiptDescriptionTag(val description: Event) : Tag {
   override fun toJsonList(): List<String> = listOf(
     "description", description.toJson(),
   )
+}
+
+/**
+ * Tag for specifying encryption method in NIP-47 wallet connect protocol.
+ *
+ * @property method The encryption method identifier (e.g., "nip04", "nip44")
+ */
+data class EncryptionTag(val method: String) : Tag {
+  override fun toJsonList() = listOf("encryption", method)
+}
+
+/**
+ * Tag for specifying notification types in NIP-47 wallet connect protocol.
+ *
+ * @property types List of notification type identifiers
+ */
+data class NotificationsTag(val types: List<String>) : Tag {
+  override fun toJsonList() = listOf("notifications") + types
+}
+
+/**
+ * Tag for identifying replaceable events using a custom identifier.
+ *
+ * @property identifier Custom identifier string for the replaceable event
+ */
+data class DTag(val identifier: String) : Tag {
+  override fun toJsonList() = listOf("d", identifier)
 }
