@@ -32,6 +32,7 @@ import io.kotest.property.arbitrary.char
 import io.kotest.property.arbitrary.filterNot
 import io.kotest.property.arbitrary.map
 import io.kotest.property.arbitrary.pair
+import io.kotest.property.arbitrary.string
 import io.kotest.property.checkAll
 
 class TagTest : StringSpec({
@@ -88,10 +89,11 @@ class TagTest : StringSpec({
   }
 
   "string list with incorrect tag should fail to parse" {
-    checkAll(Arb.pair(
+    val knownTags = setOf("e", "p", "t", "d", "amount", "lnurl", "relays", "bolt11", "preimage", "description", "encryption", "notifications")
+    checkAll(
       arbTag,
-      Arb.char().filterNot { setOf('e', 'p', 't').contains(it) }.map { it.toString() }
-    )) { (tag, c) ->
+      Arb.string(1..20).filterNot { knownTags.contains(it) }
+    ) { tag, c ->
       shouldThrow<IllegalArgumentException> { Tag.parseRaw(listOf(c).plus(tag.toJsonList().drop(1))) }
     }
   }
