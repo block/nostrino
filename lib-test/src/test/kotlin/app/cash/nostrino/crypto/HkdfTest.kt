@@ -23,11 +23,11 @@ import okio.ByteString.Companion.toByteString
 
 class HkdfTest : StringSpec({
 
-  "extract produces 32 byte output" {
-    val ikm = ByteArray(32).apply { java.security.SecureRandom().nextBytes(this) }
+  "extract with test vector from RFC 5869" {
     val salt = "nip44-v2".encodeToByteArray()
+    val sharedSecret = "315e59ff51cb9209768cf7da80791ddcaae56ac9775eb25b6dee1234bc5d2268".decodeHex()
 
-    val result = Hkdf.extract(salt, ikm)
+    val result = Hkdf.extract(salt, sharedSecret.toByteArray())
 
     result.size shouldBe 32
   }
