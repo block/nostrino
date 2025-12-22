@@ -47,12 +47,14 @@ subprojects {
       kotlinOptions {
         jvmTarget = "11"
         allWarningsAsErrors = true
+        freeCompilerArgs += listOf("-Xexpect-actual-classes")
       }
     }
     val compileTestKotlin by tasks.getting(KotlinCompile::class) {
       kotlinOptions {
         jvmTarget = "11"
         allWarningsAsErrors = true
+        freeCompilerArgs += listOf("-Xexpect-actual-classes")
       }
     }
 

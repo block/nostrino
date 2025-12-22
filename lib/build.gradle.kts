@@ -15,6 +15,14 @@ kotlin {
   iosSimulatorArm64()
   linuxX64()
 
+  targets.all {
+    compilations.all {
+      kotlinOptions {
+        freeCompilerArgs += listOf("-Xexpect-actual-classes")
+      }
+    }
+  }
+
   sourceSets {
 
     commonMain {
