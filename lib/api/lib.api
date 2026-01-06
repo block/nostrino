@@ -178,6 +178,56 @@ public final class app/cash/nostrino/crypto/Key$Companion {
 	public final fun parse (Ljava/lang/String;)Lapp/cash/nostrino/crypto/Key;
 }
 
+public final class app/cash/nostrino/crypto/Nip44 {
+	public static final field INSTANCE Lapp/cash/nostrino/crypto/Nip44;
+	public final fun decrypt (Lapp/cash/nostrino/crypto/Nip44CipherText;[B)Ljava/lang/String;
+	public final fun encrypt (Ljava/lang/String;[B[B)Lapp/cash/nostrino/crypto/Nip44CipherText;
+	public static synthetic fun encrypt$default (Lapp/cash/nostrino/crypto/Nip44;Ljava/lang/String;[B[BILjava/lang/Object;)Lapp/cash/nostrino/crypto/Nip44CipherText;
+	public final fun generateNonce ()[B
+	public final fun getConversationKey ([B)[B
+	public final fun getMessageKeys ([B[B)Lapp/cash/nostrino/crypto/Nip44$MessageKeys;
+}
+
+public final class app/cash/nostrino/crypto/Nip44$MessageKeys {
+	public fun <init> ([B[B[B)V
+	public final fun clear ()V
+	public final fun component1 ()[B
+	public final fun component2 ()[B
+	public final fun component3 ()[B
+	public final fun copy ([B[B[B)Lapp/cash/nostrino/crypto/Nip44$MessageKeys;
+	public static synthetic fun copy$default (Lapp/cash/nostrino/crypto/Nip44$MessageKeys;[B[B[BILjava/lang/Object;)Lapp/cash/nostrino/crypto/Nip44$MessageKeys;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getChachaKey ()[B
+	public final fun getChachaNonce ()[B
+	public final fun getHmacKey ()[B
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class app/cash/nostrino/crypto/Nip44CipherText {
+	public static final field Companion Lapp/cash/nostrino/crypto/Nip44CipherText$Companion;
+	public static final field VERSION_2 B
+	public fun <init> (BLokio/ByteString;Lokio/ByteString;Lokio/ByteString;)V
+	public final fun component1 ()B
+	public final fun component2 ()Lokio/ByteString;
+	public final fun component3 ()Lokio/ByteString;
+	public final fun component4 ()Lokio/ByteString;
+	public final fun copy (BLokio/ByteString;Lokio/ByteString;Lokio/ByteString;)Lapp/cash/nostrino/crypto/Nip44CipherText;
+	public static synthetic fun copy$default (Lapp/cash/nostrino/crypto/Nip44CipherText;BLokio/ByteString;Lokio/ByteString;Lokio/ByteString;ILjava/lang/Object;)Lapp/cash/nostrino/crypto/Nip44CipherText;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCiphertext ()Lokio/ByteString;
+	public final fun getMac ()Lokio/ByteString;
+	public final fun getNonce ()Lokio/ByteString;
+	public final fun getVersion ()B
+	public fun hashCode ()I
+	public final fun toBase64 ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class app/cash/nostrino/crypto/Nip44CipherText$Companion {
+	public final fun parse (Ljava/lang/String;)Lapp/cash/nostrino/crypto/Nip44CipherText;
+}
+
 public final class app/cash/nostrino/crypto/Nip44Padding {
 	public static final field INSTANCE Lapp/cash/nostrino/crypto/Nip44Padding;
 	public final fun calcPaddedLen (I)I
