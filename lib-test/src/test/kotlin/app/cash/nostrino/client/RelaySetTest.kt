@@ -89,7 +89,7 @@ class RelaySetTest : StringSpec({
   }
 
   "merge distinct events into a single flow" {
-    val events = Arb.list(arbEvent, 20..20).next().distinct().take(6)
+    val events = Arb.list(arbEvent, 20..20).next().distinctBy { it.id }.take(6)
     val set = RelaySet(
       setOf(
         FakeRelay(events.take(2).toMutableList()),
@@ -103,7 +103,7 @@ class RelaySetTest : StringSpec({
   }
 
   "merge duplicate events into a single flow" {
-    val events = Arb.list(arbEvent, 20..20).next().distinct().take(6).toMutableList()
+    val events = Arb.list(arbEvent, 20..20).next().distinctBy { it.id }.take(6).toMutableList()
     val set = RelaySet(
       setOf(
         FakeRelay(events),
@@ -115,7 +115,7 @@ class RelaySetTest : StringSpec({
   }
 
   "merge partially overlapping events into a single flow" {
-    val events = Arb.list(arbEvent, 20..20).next().distinct().take(6).toMutableList()
+    val events = Arb.list(arbEvent, 20..20).next().distinctBy { it.id }.take(6).toMutableList()
     val set = RelaySet(
       setOf(
         FakeRelay(events.take(4).toMutableList()),
@@ -135,7 +135,7 @@ class RelaySetTest : StringSpec({
   }
 
   "merge relay messages into a single flow" {
-    val events = Arb.list(arbEvent, 20..20).next().distinct().take(6).toMutableList()
+    val events = Arb.list(arbEvent, 20..20).next().distinctBy { it.id }.take(6).toMutableList()
     val set = RelaySet(
       setOf(
         FakeRelay(events),
