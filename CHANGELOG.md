@@ -3,8 +3,18 @@
 
 ## [Unreleased]
 
+## [0.0.7] - 2026-07-31
+
 ### Added
 * NIP-44 Versioned Encrypted Direct Messages with ChaCha20 and HMAC-SHA256 (Jem Mawson)
+* Kotlin Multiplatform support: JVM, iOS (x64, arm64, simulator arm64) and Linux x64 targets (Jose Mateo)
+* Multiplatform `PubKey`, `SecKey` and `SecKeyGenerator` (Jose Mateo)
+* Relay messages and connection state exposed as flows on `RelayClient` (Jose Mateo)
+* Random subscription IDs used by default in `Relay` (Jem Mawson)
+
+### Changed
+* JVM target raised to 11 (Jem Mawson)
+* JSON adapters restructured into a protocol/serde layer; relay message types now use enums instead of string literals (Jem Mawson)
 
 
 ## [0.0.6] - 2023-07-26
