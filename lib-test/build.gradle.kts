@@ -109,7 +109,7 @@ mavenPublishing {
   val publishingExtension = extensions.getByType(PublishingExtension::class.java)
 
   pomFromGradleProperties()
-  publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.DEFAULT, true)
+  publishToMavenCentral(automaticRelease = true)
   signAllPublications()
 
   publishingExtension.publications.create<MavenPublication>("maven") {

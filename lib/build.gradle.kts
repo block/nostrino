@@ -56,6 +56,6 @@ mavenPublishing {
     )
   )
   pomFromGradleProperties()
-  publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.DEFAULT, true)
+  publishToMavenCentral(automaticRelease = true)
   signAllPublications()
 }
