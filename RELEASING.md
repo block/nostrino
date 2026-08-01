@@ -37,9 +37,9 @@ derived from [this guide](https://keepachangelog.com/en/1.0.0/)
     ``` 
 
 6. Wait until the PR created above is merged, then trigger the
-[Publish a release](https://github.com/cashapp/nostrino/actions/workflows/Release.yml) action against the new tag.
-This will publish to [Sonatype Nexus](https://oss.sonatype.org/), closing and releasing the artifact 
-automatically to promote it to Maven Central. Note that it can take 10 to 30 minutes or more for the
+[Publish a release](https://github.com/block/nostrino/actions/workflows/Release.yml) action against the new tag.
+This will publish to Maven Central via the [Central Portal](https://central.sonatype.com/),
+automatically releasing the deployment. Note that it can take 10 to 30 minutes or more for the
 artifacts to appear on Maven Central.
 
 7. Checkout `main` branch and pull the latest changes
@@ -61,10 +61,11 @@ artifacts to appear on Maven Central.
     gh pr create -f && gh pr merge --auto --squash
     ```
 
-9. [Draft a new release](https://github.com/cashapp/nostrino/releases/new) of `A.B.C` and publish it. Copy release 
+9. [Draft a new release](https://github.com/block/nostrino/releases/new) of `A.B.C` and publish it. Copy release 
 notes added to `CHANGELOG.md` in step 1 into the release description.
 
 ## Troubleshooting
 
-- If the GitHub action fails, drop the artifacts from Sonatype and re-run the job. A Sonatype account with app.cash permissions
+- If the GitHub action fails, check the deployment in the [Central Portal](https://central.sonatype.com/publishing),
+    drop it if necessary, and re-run the job. A Central Portal account with `app.cash` namespace permissions
     is required. Raise an issue if you do not have this.
