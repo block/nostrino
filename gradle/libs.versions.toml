@@ -1,7 +1,7 @@
 [versions]
 acinqSecp256 = "0.15.0"
 guava = "31.1-jre"
-junit = "5.9.3"
+junit = "5.14.4"
 kotest = "5.8.1"
 # @pin
 kotlin = "1.9.23"
