@@ -13,7 +13,7 @@ moshi = "1.15.0"
 okHttp = "5.0.0-alpha.11"
 okIo = "3.4.0"
 secureRandom = "0.3.1"
-slf4j = "2.0.7"
+slf4j = "2.0.18"
 versionCatalogUpdateGradlePlugin = "0.8.1"
 versionsGradlePlugin = "0.47.0"
 
