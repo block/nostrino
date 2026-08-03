@@ -4,7 +4,7 @@ guava = "31.1-jre"
 junit = "5.9.3"
 kotest = "5.8.1"
 # @pin
-kotlin = "1.9.23"
+kotlin = "1.9.25"
 kotlinBinaryCompatibilityPlugin = "0.13.2"
 kotlinCoroutines = "1.7.2"
 kotlinLogging = "3.0.5"
