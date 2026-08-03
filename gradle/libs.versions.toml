@@ -1,21 +1,21 @@
 [versions]
-acinqSecp256 = "0.15.0"
+acinqSecp256 = "0.23.0"
 guava = "31.1-jre"
 junit = "5.9.3"
-kotest = "5.8.1"
+kotest = "5.9.1"
 # @pin
 kotlin = "1.9.23"
-kotlinBinaryCompatibilityPlugin = "0.13.2"
+kotlinBinaryCompatibilityPlugin = "0.18.1"
 kotlinCoroutines = "1.7.2"
 kotlinLogging = "3.0.5"
-mavenPublishGradlePlugin = "0.34.0"
-moshi = "1.15.0"
+mavenPublishGradlePlugin = "0.37.0"
+moshi = "1.15.2"
 okHttp = "5.0.0-alpha.11"
-okIo = "3.4.0"
-secureRandom = "0.3.1"
+okIo = "3.18.1"
+secureRandom = "0.4.0"
 slf4j = "2.0.7"
-versionCatalogUpdateGradlePlugin = "0.8.1"
-versionsGradlePlugin = "0.47.0"
+versionCatalogUpdateGradlePlugin = "0.8.5"
+versionsGradlePlugin = "0.57.0"
 
 [libraries]
 acinqSecp256k1 = { module = "fr.acinq.secp256k1:secp256k1-kmp", version.ref = "acinqSecp256" }
@@ -35,7 +35,7 @@ okHttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okHttp" }
 okIo = { module = "com.squareup.okio:okio", version.ref = "okIo" }
 secureRandom = { module = "org.kotlincrypto:secure-random", version.ref = "secureRandom" }
 slf4jSimple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
-turbine = "app.cash.turbine:turbine:1.0.0"
+turbine = "app.cash.turbine:turbine:1.2.1"
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 
 [bundles]
@@ -46,8 +46,8 @@ kotest = [
 ]
 
 [plugins]
-dokka = "org.jetbrains.dokka:1.8.20"
-gradleDocker = "com.bmuschko.docker-remote-api:9.3.1"
+dokka = "org.jetbrains.dokka:1.9.20"
+gradleDocker = "com.bmuschko.docker-remote-api:9.4.0"
 kotlinBinaryCompatibilityPlugin = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinBinaryCompatibilityPlugin" }
 kotlinGradlePlugin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

@@ -10,7 +10,7 @@ plugins {
   id("java")
   id("kotlin")
   `java-library`
-  id("com.bmuschko.docker-remote-api") version "9.3.0"
+  id("com.bmuschko.docker-remote-api") version "9.4.0"
 }
 
 kotlin {
