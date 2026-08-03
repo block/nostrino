@@ -1,6 +1,6 @@
 [versions]
 acinqSecp256 = "0.15.0"
-guava = "31.1-jre"
+guava = "33.6.0-jre"
 junit = "5.9.3"
 kotest = "5.8.1"
 # @pin
