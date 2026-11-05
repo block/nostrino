@@ -3,6 +3,11 @@
 
 ## [Unreleased]
 
+### Added
+* NIP-29 group chat messages (`GroupChatMessage`, kind 9) and NIP-98 HTTP authorization (`HttpAuth`, kind 27235) (Jem Mawson)
+* `EventContent.sign` at a given instant, so retries re-send the same event (Jem Mawson)
+* `BuzzClient` and `BuzzChannel`, for posting messages to a [Buzz](https://github.com/block/buzz) channel (Jem Mawson)
+
 ## [0.0.7] - 2026-07-31
 
 ### Added

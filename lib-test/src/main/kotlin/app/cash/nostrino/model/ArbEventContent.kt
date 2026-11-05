@@ -27,6 +27,11 @@ import app.cash.nostrino.model.ArbEvent.arbEvent
 import app.cash.nostrino.model.ArbEvent.arbEventId
 import app.cash.nostrino.model.ArbTags.arbAmountTag
 import app.cash.nostrino.model.ArbTags.arbEventTag
+import app.cash.nostrino.model.ArbTags.arbGroupTag
+import app.cash.nostrino.model.ArbTags.arbMethodTag
+import app.cash.nostrino.model.ArbTags.arbNonceTag
+import app.cash.nostrino.model.ArbTags.arbPayloadTag
+import app.cash.nostrino.model.ArbTags.arbUrlTag
 import app.cash.nostrino.model.ArbTags.arbLnUrlTag
 import app.cash.nostrino.model.ArbTags.arbPubKeyTag
 import app.cash.nostrino.model.ArbTags.arbRelaysTag
@@ -73,6 +78,19 @@ object ArbEventContent {
       Arb.string(minSize = 1),
       Arb.list(ArbTags.arbTag, 0..5)
     ).map { (content, tags) -> TextNote(content, tags) }
+  }
+
+  val arbGroupChatMessage: Arb<GroupChatMessage> by lazy {
+    Arb.pair(Arb.string(), arbGroupTag).map { (text, group) -> GroupChatMessage(text, group.groupId) }
+  }
+
+  val arbHttpAuth: Arb<HttpAuth> by lazy {
+    Arb.bind(
+      arbUrlTag,
+      arbMethodTag,
+      arbPayloadTag.orNull(),
+      arbNonceTag.orNull(),
+    ) { url, method, payload, nonce -> HttpAuth(url.url, method.method, payload?.sha256, nonce?.nonce) }
   }
 
   val arbUserMetaData: Arb<UserMetaData> by lazy {
