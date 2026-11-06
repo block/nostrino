@@ -40,6 +40,7 @@ at [https://cashapp.github.io/nostrino](https://cashapp.github.io/nostrino)
 | ✅        | [25 - Reactions](https://github.com/nostr-protocol/nips/blob/master/25.md)                                                       |
 | 🗅         | [26 - Delegated Event Signing](https://github.com/nostr-protocol/nips/blob/master/26.md)                                         |
 | 🗅         | [28 - Public Chat](https://github.com/nostr-protocol/nips/blob/master/28.md)                                                     |
+| 🚧        | [29 - Relay-based Groups](https://github.com/nostr-protocol/nips/blob/master/29.md)                                              |
 | 🗅         | [33 - Parameterized Replaceable Events](https://github.com/nostr-protocol/nips/blob/master/33.md)                                |
 | 🗅         | [36 - Sensitive Content](https://github.com/nostr-protocol/nips/blob/master/36.md)                                               |
 | 🗅         | [40 - Expiration Timestamp](https://github.com/nostr-protocol/nips/blob/master/40.md)                                            |
@@ -50,6 +51,7 @@ at [https://cashapp.github.io/nostrino](https://cashapp.github.io/nostrino)
 | 🗅         | [56 - Reporting](https://github.com/nostr-protocol/nips/blob/master/56.md)                                                       |
 | 🗅         | [65 - Relay List Metadata](https://github.com/nostr-protocol/nips/blob/master/65.md)                                             |
 | ✅        | [57 - Lightning Zaps](https://github.com/nostr-protocol/nips/blob/master/57.md)                                                  |
+| ✅        | [98 - HTTP Auth](https://github.com/nostr-protocol/nips/blob/master/98.md)                                                       |
 
 
 ## Building

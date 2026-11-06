@@ -45,7 +45,9 @@ object ArbEvent {
       ArbEventContent.arbEventDeletion,
       ArbEventContent.arbUserMetaData,
       ArbEventContent.arbReaction,
-      ArbEventContent.arbZapRequest
+      ArbEventContent.arbZapRequest,
+      ArbEventContent.arbGroupChatMessage,
+      ArbEventContent.arbHttpAuth,
     )
   }
 

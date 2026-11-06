@@ -30,6 +30,7 @@ kotestKmmEngine = { module = "io.kotest:kotest-framework-engine", version.ref = 
 kotestProperty = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 kotlinLoggingJvm = { module = "io.github.microutils:kotlin-logging-jvm", version.ref = "kotlinLogging" }
 kotlinxCoroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
+mockWebServer = { module = "com.squareup.okhttp3:mockwebserver3", version.ref = "okHttp" }
 moshi = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
 okHttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okHttp" }
 okIo = { module = "com.squareup.okio:okio", version.ref = "okIo" }

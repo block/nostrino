@@ -36,6 +36,7 @@ dependencies {
   testImplementation(libs.kotestAssertions)
   testImplementation(libs.kotestJunitRunnerJvm)
   testImplementation(libs.kotestProperty)
+  testImplementation(libs.mockWebServer)
   testImplementation(libs.turbine)
   testRuntimeOnly(libs.slf4jSimple)
   testRuntimeOnly(libs.junitEngine)
