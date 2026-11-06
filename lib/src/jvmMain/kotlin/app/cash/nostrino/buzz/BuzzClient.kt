@@ -22,6 +22,7 @@ import app.cash.nostrino.model.GroupChatMessage
 import app.cash.nostrino.model.HttpAuth
 import app.cash.nostrino.protocol.serde.NostrJson.moshi
 import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonDataException
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -64,7 +65,11 @@ class BuzzClient(
       .build()
     val acknowledgement = httpClient.newCall(request).execute().use { response ->
       if (!response.isSuccessful) throw IOException("Buzz relay returned HTTP ${response.code}.")
-      acknowledgementAdapter.fromJson(response.body.source())
+      try {
+        acknowledgementAdapter.fromJson(response.body.source())
+      } catch (e: JsonDataException) {
+        throw IOException("Buzz relay returned a malformed acknowledgement.", e)
+      }
     }
     if (acknowledgement?.get("accepted") != true || acknowledgement["event_id"] != message.id.hex()) {
       throw IOException("Buzz relay did not acknowledge event ${message.id.hex()}: $acknowledgement")

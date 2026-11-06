@@ -102,6 +102,8 @@ class BuzzClientTest : StringSpec({
       MockResponse().setResponseCode(500),
       MockResponse().setBody("""{"accepted":false,"event_id":"00","message":"blocked: not a member"}"""),
       MockResponse().setBody("""{"accepted":true,"event_id":"${"0".repeat(64)}","message":""}"""),
+      MockResponse().setBody("[]"),
+      MockResponse().setBody("not json"),
     ).forEach { response ->
       withRelay(respondingWith(response)) { relay ->
         val channel = BuzzChannel(relay.url("/events"), arbUUID.next().toString())
@@ -128,7 +130,7 @@ class BuzzClientTest : StringSpec({
     /** Accepts every event, acknowledging it by its own id as a Buzz relay does. */
     val acknowledging = object : Dispatcher() {
       override fun dispatch(request: RecordedRequest): MockResponse {
-        val id = Event.fromJson(request.body.clone().readUtf8())!!.id.hex()
+        val id = Event.fromJson(request.body.clone().readUtf8()).shouldNotBeNull().id.hex()
         return MockResponse().setBody("""{"accepted":true,"event_id":"$id","message":""}""")
       }
     }
