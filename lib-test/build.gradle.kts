@@ -4,6 +4,7 @@ import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import org.jetbrains.dokka.gradle.DokkaTask
 import java.net.ServerSocket
+import java.security.SecureRandom
 import java.net.URL
 
 plugins {
@@ -62,12 +63,12 @@ tasks.withType<DokkaTask>().configureEach {
 }
 
 val createDockerfile by tasks.creating(Dockerfile::class) {
-  from("scsibug/nostr-rs-relay:latest")
+  from("scsibug/nostr-rs-relay:0.10.0")
 }
 
 val buildImage by tasks.creating(DockerBuildImage::class) {
   dependsOn(createDockerfile)
-  images.add("scsibug/nostr-rs-relay:latest")
+  images.add("scsibug/nostr-rs-relay:0.10.0")
 }
 
 val createContainer by tasks.creating(DockerCreateContainer::class) {
@@ -85,8 +86,16 @@ val startContainer by tasks.creating(DockerStartContainer::class) {
   targetContainerId(createContainer.containerId)
 }
 
+val startBuzzRelay by tasks.creating(Exec::class) {
+  commandLine("docker", "compose", "-f", "buzz-relay.compose.yml", "up", "--detach", "--wait", "--renew-anon-volumes")
+  environment(
+    "BUZZ_TEST_RELAY_PRIVATE_KEY",
+    ByteArray(32).also(SecureRandom()::nextBytes).joinToString("") { "%02x".format(it) },
+  )
+}
+
 tasks.withType<Test>().configureEach {
-  dependsOn(startContainer)
+  dependsOn(startContainer, startBuzzRelay)
 }
 
 fun relayIsRunning() =
