@@ -8,6 +8,9 @@
 * `EventContent.sign` at a given instant, so retries re-send the same event (Jem Mawson)
 * `BuzzClient` and `BuzzChannel`, for posting messages to a [Buzz](https://github.com/block/buzz) channel (Jem Mawson)
 
+### Fixed
+* Event ids of content containing U+2028 or U+2029 now match the NIP-01 serialization that relays verify (Jem Mawson)
+
 ## [0.0.7] - 2026-07-31
 
 ### Added
