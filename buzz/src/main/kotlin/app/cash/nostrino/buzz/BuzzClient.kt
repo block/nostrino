@@ -46,7 +46,8 @@ class BuzzClient(
 
   /**
    * Post [text] to [channel] as created at [at], and return the posted event once the relay has acknowledged it.
-   * Throws [IOException] if the request fails or the relay does not acknowledge the event.
+   * Throws [IOException] if the request fails or the relay does not acknowledge the event, with the relay's reason when
+   * it refuses one.
    *
    * The event's id derives only from [text], [channel] and [at] (to the second), so a retry with the same values
    * re-sends the same event, which the relay stores once, rather than posting a second message. Buzz rejects an
@@ -68,7 +69,9 @@ class BuzzClient(
       .post(body.toRequestBody("application/json".toMediaType()))
       .build()
     val acknowledgement = httpClient.newCall(request).execute().use { response ->
-      if (!response.isSuccessful) throw IOException("Buzz relay returned HTTP ${response.code}.")
+      if (!response.isSuccessful) {
+        throw IOException("Buzz relay returned HTTP ${response.code}: ${response.peekBody(MAX_REASON_BYTES).string()}")
+      }
       runCatching { acknowledgementAdapter.fromJson(response.body.source()) }
         .getOrElse { throw IOException("Buzz relay returned a malformed acknowledgement.", it) }
     }
@@ -79,6 +82,7 @@ class BuzzClient(
   }
 
   private companion object {
+    val MAX_REASON_BYTES = 1024L
     val acknowledgementAdapter: JsonAdapter<Map<*, *>> = moshi.adapter(Map::class.java)
   }
 }
