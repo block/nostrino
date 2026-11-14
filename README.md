@@ -10,6 +10,31 @@ It is a work in progress. See current [NIP support](#supported-nips).
 On the [Sontaype page for Nostrino](https://central.sonatype.com/namespace/app.cash.nostrino), choose the latest version
 of `nostr-sdk` and follow the instructions for inclusion in your build tool.
 
+### Artifacts
+
+| Artifact | For |
+|---|---|
+| `app.cash.nostrino:nostr-sdk` | Keys, events, ids and signatures, relays, and NIPs such as NIP-44 encryption and NIP-98 HTTP auth |
+| `app.cash.nostrino:nostr-sdk-buzz` | Posting to [Buzz](https://github.com/block/buzz) channels over Buzz's HTTP API (JVM) |
+
+### Posting to a Buzz channel
+
+```kotlin
+val client = BuzzClient(SecKey.parse(nsec))
+client.post(BuzzChannel.parse("wss://buzz.example.com", channelId), "Hello, Buzz")
+```
+
+### Signing events and HTTP requests
+
+```kotlin
+val event = Event.sign(sec, kind = 9, tags = listOf(listOf("h", channelId)), content = "Hello")
+val auth = HttpAuth(url, "POST", payload = body.encodeUtf8().sha256(), nonce = nonce).sign(sec)
+request.header("Authorization", HttpAuth.header(auth))
+```
+
+`Event.sign` hashes the id over the exact NIP-01 serialization that relays verify, so there is no need to build the
+`[0, pubkey, created_at, kind, tags, content]` array yourself.
+
 ## Documentation
 
 The API documentation is published with each release

@@ -4,6 +4,19 @@
 
 Nostrino is a Nostr SDK for Kotlin, providing a multiplatform implementation of the Nostr protocol. The project implements various NIPs (Nostr Implementation Possibilities) and is used by Block/CashApp for Nostr-based features. Nostrino supports JVM, iOS, and Linux platforms.
 
+## Using Nostrino from Another Project
+
+Read this when a service or app needs Nostr or Buzz, not only when working on Nostrino itself.
+
+- On the JVM or in Kotlin, use Nostrino for all Nostr work: keys, event ids and signatures, NIP-98 HTTP auth, NIP-44
+  encryption and relays. Use `nostr-sdk-buzz` (`BuzzClient`) to post to Buzz.
+- Do not hand-roll NIP-01 id hashing, Schnorr event signing or `Authorization: Nostr` headers. The id preimage must
+  match the relay's serialization byte for byte, and default Moshi and Jackson settings get it wrong for some content
+  (for example U+2028 and U+2029).
+- If Nostrino lacks something a caller needs, add it to Nostrino rather than working around it in the caller. Standard
+  NIPs go in `lib`, and Buzz-specific behaviour goes in `buzz`.
+- See [README.md](README.md) for usage examples.
+
 ## Technology Stack
 
 - **Language**: Kotlin (Multiplatform)
