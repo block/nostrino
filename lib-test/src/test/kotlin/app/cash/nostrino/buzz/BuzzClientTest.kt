@@ -79,6 +79,17 @@ class BuzzClientTest : StringSpec({
     messagesIn(channel, sec) shouldContainExactly listOf(first)
   }
 
+  "a post containing line and paragraph separators is accepted as nip-01 hashes it" {
+    val sec = arbSecKey.next()
+    val text = "line\u2028separator paragraph\u2029separator"
+    val channel = createChannel(sec, "open")
+
+    val posted = BuzzClient(sec).post(channel, text, arbRecentSecond.next())
+
+    posted.content shouldBe text
+    messagesIn(channel, sec) shouldContainExactly listOf(posted)
+  }
+
   "a post to a private channel by a non-member fails" {
     val channel = createChannel(arbSecKey.next(), "private")
 
