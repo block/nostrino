@@ -1,0 +1,51 @@
+name: nostrino-buzz
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: buzz
+      POSTGRES_DB: buzz
+      POSTGRES_HOST_AUTH_METHOD: trust
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U buzz -d buzz"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  relay:
+    image: ghcr.io/block/buzz:0.3.0
+    environment:
+      BUZZ_RELAY_PRIVATE_KEY: ${BUZZ_TEST_RELAY_PRIVATE_KEY:?set BUZZ_TEST_RELAY_PRIVATE_KEY}
+      BUZZ_BIND_ADDR: 0.0.0.0:3000
+      BUZZ_HEALTH_PORT: "8080"
+      DATABASE_URL: postgres://buzz@postgres:5432/buzz
+      REDIS_URL: redis://redis:6379
+      BUZZ_AUTO_MIGRATE: "true"
+      BUZZ_GIT_CONFORMANCE_PROBE: "false"
+      RELAY_URL: ws://localhost:7708
+    ports:
+      - "7708:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    # The image has bash but no curl or wget.
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "bash -ec 'exec 3<>/dev/tcp/127.0.0.1/8080; printf \"GET /_readiness HTTP/1.1\\r\\nHost: 127.0.0.1\\r\\nConnection: close\\r\\n\\r\\n\" >&3; grep -q \"200 OK\" <&3'",
+        ]
+      interval: 2s
+      timeout: 3s
+      retries: 60
