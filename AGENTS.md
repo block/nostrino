@@ -113,10 +113,10 @@ Nostrino follows the **Sociable Unit Testing** approach for comprehensive, resil
 - ✅ **Fast execution**: Still runs quickly despite using real components
 - ✅ **Less brittle**: No need to update mocks when internal implementations change
 
-**System Boundaries** (what gets faked):
-- External relay servers (use FakeRelay for testing)
-- External HTTP endpoints
+**System Boundaries** (what gets faked or containerised):
+- External relay servers: use `FakeRelay` for unit tests, and the Docker relays for integration tests
 - Nostr relay connections
+- HTTP relay APIs (such as Buzz's `/events`): always the real Buzz relay in Docker, never a mock server
 
 **Benefits over traditional mock-based testing**:
 - Tests behavior, not implementation details
@@ -131,7 +131,13 @@ Nostrino follows the **Sociable Unit Testing** approach for comprehensive, resil
 - **Assertions**: Use Kotest matchers (`shouldBe`, `shouldBeEqual`, `shouldContainExactly`, etc.) - NOT JUnit assertions
 - **Test Naming**: Test class suffix is `Test` (e.g., `RelaySetTest.kt`)
 - **Test Names**: Use string literals for readable test names (StringSpec style)
-- **Integration Tests**: Use Docker containers for relay testing (nostr-rs-relay)
+- **Integration Tests**: Use the Docker relays that `lib-test` starts before its tests:
+  - nostr-rs-relay at `ws://localhost:7707`, for NIP-01 websocket traffic
+  - the Buzz relay (`ghcr.io/block/buzz`, with Postgres and Redis, from `lib-test/buzz-relay.compose.yml`) at
+    `http://localhost:7708`, for Buzz's HTTP API
+- **Never use MockWebServer**: Do not use MockWebServer, or any other mock HTTP server, in tests. Test HTTP clients
+  against the real relay in Docker, so the tests prove what the relay accepts. Keep Docker image tags pinned to a
+  released version, and update them when the relay releases
 - **Mocking**: Use fake implementations (e.g., `FakeRelay`) for external system boundaries, not internal dependencies
 - **Test Data Generation**: Prefer `Arb<T>` generators over hard-coded values. Compose existing `Arb` generators for new types
   - Located in `lib-test/src/main/kotlin` (e.g., `ArbEvent.kt`, `ArbPubKey.kt`)
@@ -208,7 +214,7 @@ class FakeRelay(val sent: MutableList<Event> = mutableListOf()) : Relay() {
 #### Testing Best Practices
 
 1. **Use real dependencies** - Let controllers use real stores, validators, etc.
-2. **Fake at boundaries** - Only fake external relay servers and HTTP endpoints
+2. **Fake at boundaries** - Only fake external relay servers, and never with a mock HTTP server
 3. **Test both paths** - Write tests for success and failure cases
 4. **Use property-based testing** - Leverage Kotest's `Arb` generators and `checkAll()` for comprehensive coverage
 5. **Avoid redundant comments** - Let test names be descriptive. Never add AAA (Arrange/Act/Assert) comments
@@ -251,7 +257,7 @@ Testing utilities and integration tests. Contains:
 - Arb generators for test data (`ArbEvent`, `ArbPubKey`, etc.)
 - Fake implementations (`FakeRelay`)
 - Integration tests against real relay server
-- Docker-based relay setup for testing
+- Docker-based relay setup for testing (nostr-rs-relay, and the Buzz relay stack)
 
 ## Publishing
 
