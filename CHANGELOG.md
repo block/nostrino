@@ -7,6 +7,7 @@
 * NIP-29 group chat messages (`GroupChatMessage`, kind 9) and NIP-98 HTTP authorization (`HttpAuth`, kind 27235) (Jem Mawson)
 * `EventContent.sign` at a given instant, so retries re-send the same event (Jem Mawson)
 * `BuzzClient` and `BuzzChannel`, for posting messages to a [Buzz](https://github.com/block/buzz) channel (Jem Mawson)
+* `Event.sign`, for events of any kind with raw tags, and `Event.validId` (Jem Mawson)
 
 ### Fixed
 * Event ids of content containing U+2028 or U+2029 now match the NIP-01 serialization that relays verify (Jem Mawson)

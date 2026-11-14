@@ -490,6 +490,7 @@ public final class app/cash/nostrino/model/Event {
 	public final fun getPubKey ()Lokio/ByteString;
 	public final fun getSig ()Lokio/ByteString;
 	public final fun getTags ()Ljava/util/List;
+	public final fun getValidId ()Z
 	public final fun getValidSignature ()Z
 	public fun hashCode ()I
 	public final fun toJson ()Ljava/lang/String;
@@ -498,6 +499,8 @@ public final class app/cash/nostrino/model/Event {
 
 public final class app/cash/nostrino/model/Event$Companion {
 	public final fun fromJson (Ljava/lang/String;)Lapp/cash/nostrino/model/Event;
+	public final fun sign (Lapp/cash/nostrino/crypto/SecKey;ILjava/util/List;Ljava/lang/String;Ljava/time/Instant;)Lapp/cash/nostrino/model/Event;
+	public static synthetic fun sign$default (Lapp/cash/nostrino/model/Event$Companion;Lapp/cash/nostrino/crypto/SecKey;ILjava/util/List;Ljava/lang/String;Ljava/time/Instant;ILjava/lang/Object;)Lapp/cash/nostrino/model/Event;
 }
 
 public abstract interface class app/cash/nostrino/model/EventContent {

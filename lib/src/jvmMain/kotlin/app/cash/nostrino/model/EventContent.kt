@@ -17,12 +17,9 @@
 package app.cash.nostrino.model
 
 import app.cash.nostrino.crypto.SecKey
-import app.cash.nostrino.protocol.serde.CanonicalJson
 import app.cash.nostrino.protocol.serde.NostrJson.moshi
 import com.squareup.moshi.JsonAdapter
-import okio.ByteString.Companion.encodeUtf8
 import java.time.Instant
-import java.time.temporal.ChronoUnit
 
 /** A type that can be signed and converted into an Event */
 interface EventContent {
@@ -39,17 +36,7 @@ interface EventContent {
    * Sign this content as created at [at], truncated to the second. Signing the same content with the same key at the
    * same second yields an event with the same id, which a relay stores once.
    */
-  fun sign(sec: SecKey, at: Instant): Event {
-    val createdAt = at.truncatedTo(ChronoUnit.SECONDS)
-    val contentJson = toJsonString()
-    val tagsJson = tags.map { it.toJsonList() }
-    val id = CanonicalJson.eventPreimage(sec.pubKey.key.hex(), createdAt.epochSecond, kind, tagsJson, contentJson)
-      .encodeUtf8()
-      .sha256()
-    val sig = sec.sign(id)
-    return Event(id, sec.pubKey.key, createdAt, kind, tagsJson, contentJson, sig)
-  }
-
+  fun sign(sec: SecKey, at: Instant): Event = Event.sign(sec, kind, tags.map { it.toJsonList() }, toJsonString(), at)
 
   fun asZapRequest(): ZapRequest? =
     if (this is ZapRequest) this
