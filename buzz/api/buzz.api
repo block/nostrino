@@ -1,0 +1,25 @@
+public final class app/cash/nostrino/buzz/BuzzChannel {
+	public static final field Companion Lapp/cash/nostrino/buzz/BuzzChannel$Companion;
+	public fun <init> (Lokhttp3/HttpUrl;Ljava/lang/String;)V
+	public final fun component1 ()Lokhttp3/HttpUrl;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Lokhttp3/HttpUrl;Ljava/lang/String;)Lapp/cash/nostrino/buzz/BuzzChannel;
+	public static synthetic fun copy$default (Lapp/cash/nostrino/buzz/BuzzChannel;Lokhttp3/HttpUrl;Ljava/lang/String;ILjava/lang/Object;)Lapp/cash/nostrino/buzz/BuzzChannel;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getChannelId ()Ljava/lang/String;
+	public final fun getEventsUrl ()Lokhttp3/HttpUrl;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class app/cash/nostrino/buzz/BuzzChannel$Companion {
+	public final fun parse (Ljava/lang/String;Ljava/lang/String;)Lapp/cash/nostrino/buzz/BuzzChannel;
+}
+
+public final class app/cash/nostrino/buzz/BuzzClient {
+	public fun <init> (Lapp/cash/nostrino/crypto/SecKey;Lokhttp3/OkHttpClient;)V
+	public synthetic fun <init> (Lapp/cash/nostrino/crypto/SecKey;Lokhttp3/OkHttpClient;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun post (Lapp/cash/nostrino/buzz/BuzzChannel;Ljava/lang/String;Ljava/time/Instant;)Lapp/cash/nostrino/model/Event;
+	public static synthetic fun post$default (Lapp/cash/nostrino/buzz/BuzzClient;Lapp/cash/nostrino/buzz/BuzzChannel;Ljava/lang/String;Ljava/time/Instant;ILjava/lang/Object;)Lapp/cash/nostrino/model/Event;
+}
+

@@ -70,6 +70,10 @@ nostrino/
 │   └── src/
 │       ├── main/kotlin/        # Test helpers and Arb generators
 │       └── test/kotlin/        # Integration tests
+├── buzz/                  # Buzz-specific client (JVM)
+│   └── src/
+│       ├── main/kotlin/        # BuzzClient and BuzzChannel
+│       └── test/kotlin/        # Tests against the Buzz relay in Docker
 ├── buildSrc/              # Build configuration
 └── gradle/                # Gradle wrapper and version catalog
     └── libs.versions.toml # Dependency versions
@@ -131,9 +135,9 @@ Nostrino follows the **Sociable Unit Testing** approach for comprehensive, resil
 - **Assertions**: Use Kotest matchers (`shouldBe`, `shouldBeEqual`, `shouldContainExactly`, etc.) - NOT JUnit assertions
 - **Test Naming**: Test class suffix is `Test` (e.g., `RelaySetTest.kt`)
 - **Test Names**: Use string literals for readable test names (StringSpec style)
-- **Integration Tests**: Use the Docker relays that `lib-test` starts before its tests:
-  - nostr-rs-relay at `ws://localhost:7707`, for NIP-01 websocket traffic
-  - the Buzz relay (`ghcr.io/block/buzz`, with Postgres and Redis, from `lib-test/buzz-relay.compose.yml`) at
+- **Integration Tests**: Use the Docker relays that start before the tests that need them:
+  - nostr-rs-relay at `ws://localhost:7707`, started by `lib-test`, for NIP-01 websocket traffic
+  - the Buzz relay (`ghcr.io/block/buzz`, with Postgres and Redis, from `buzz/buzz-relay.compose.yml`), started by `buzz`, at
     `http://localhost:7708`, for Buzz's HTTP API
 - **Never use MockWebServer**: Do not use MockWebServer, or any other mock HTTP server, in tests. Test HTTP clients
   against the real relay in Docker, so the tests prove what the relay accepts. Keep Docker image tags pinned to a
@@ -257,7 +261,13 @@ Testing utilities and integration tests. Contains:
 - Arb generators for test data (`ArbEvent`, `ArbPubKey`, etc.)
 - Fake implementations (`FakeRelay`)
 - Integration tests against real relay server
-- Docker-based relay setup for testing (nostr-rs-relay, and the Buzz relay stack)
+- Docker-based relay setup for testing (nostr-rs-relay)
+
+### buzz/
+Client for [Buzz](https://github.com/block/buzz), published as `nostr-sdk-buzz`. Contains:
+- `BuzzClient` and `BuzzChannel`, for Buzz's HTTP API
+- Tests against the Buzz relay stack in Docker
+- Buzz-specific behaviour belongs here, not in `lib`. Standard NIPs that Buzz uses (such as NIP-29 and NIP-98) stay in `lib`
 
 ## Publishing
 

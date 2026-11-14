@@ -13,3 +13,4 @@ develocity {
 
 include(":lib")
 include(":lib-test")
+include(":buzz")
