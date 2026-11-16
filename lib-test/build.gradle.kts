@@ -4,7 +4,6 @@ import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import org.jetbrains.dokka.gradle.DokkaTask
 import java.net.ServerSocket
-import java.security.SecureRandom
 import java.net.URL
 
 plugins {
@@ -86,16 +85,8 @@ val startContainer by tasks.creating(DockerStartContainer::class) {
   targetContainerId(createContainer.containerId)
 }
 
-val startBuzzRelay by tasks.creating(Exec::class) {
-  commandLine("docker", "compose", "-f", "buzz-relay.compose.yml", "up", "--detach", "--wait", "--renew-anon-volumes")
-  environment(
-    "BUZZ_TEST_RELAY_PRIVATE_KEY",
-    ByteArray(32).also(SecureRandom()::nextBytes).joinToString("") { "%02x".format(it) },
-  )
-}
-
 tasks.withType<Test>().configureEach {
-  dependsOn(startContainer, startBuzzRelay)
+  dependsOn(startContainer)
 }
 
 fun relayIsRunning() =
