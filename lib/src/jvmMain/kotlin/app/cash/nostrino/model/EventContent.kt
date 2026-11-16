@@ -17,6 +17,7 @@
 package app.cash.nostrino.model
 
 import app.cash.nostrino.crypto.SecKey
+import app.cash.nostrino.protocol.serde.CanonicalJson
 import app.cash.nostrino.protocol.serde.NostrJson.moshi
 import com.squareup.moshi.JsonAdapter
 import okio.ByteString.Companion.encodeUtf8
@@ -42,9 +43,9 @@ interface EventContent {
     val createdAt = at.truncatedTo(ChronoUnit.SECONDS)
     val contentJson = toJsonString()
     val tagsJson = tags.map { it.toJsonList() }
-    val elements = listOf(0, sec.pubKey.key.hex(), createdAt.epochSecond, kind, tagsJson, contentJson)
-    val toJson = jsonListAdapter.toJson(elements)
-    val id = toJson.encodeUtf8().sha256()
+    val id = CanonicalJson.eventPreimage(sec.pubKey.key.hex(), createdAt.epochSecond, kind, tagsJson, contentJson)
+      .encodeUtf8()
+      .sha256()
     val sig = sec.sign(id)
     return Event(id, sec.pubKey.key, createdAt, kind, tagsJson, contentJson, sig)
   }

@@ -24,8 +24,20 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.property.arbitrary.next
 import io.kotest.property.checkAll
+import okio.ByteString.Companion.encodeUtf8
+import java.time.Instant
 
 class EventTest : StringSpec({
+
+  "event id hashes content exactly as nip-01 serializes it" {
+    val sec = SecKeyGenerator().generate()
+    val content = "line\u2028para\u2029tab\tbell\u0007 esc\u001b quote\" slash\\ é 🚀"
+    val event = TextNote(content).sign(sec, Instant.ofEpochSecond(1_700_000_000))
+    val escaped = "line\u2028para\u2029tab\\tbell\\u0007 esc\\u001b quote\\\" slash\\\\ é 🚀"
+    val canonical = """[0,"${sec.pubKey.key.hex()}",1700000000,1,[],"$escaped"]"""
+
+    event.id shouldBe canonical.encodeUtf8().sha256()
+  }
 
   "can rehydrated event content" {
     checkAll(arbEventWithContent) { (event, content) ->
