@@ -39,6 +39,35 @@ class EventTest : StringSpec({
     event.id shouldBe canonical.encodeUtf8().sha256()
   }
 
+  "signs an event of any kind with raw tags" {
+    val sec = SecKeyGenerator().generate()
+    val tags = listOf(listOf("h", "c0ffee"), listOf("x-custom", "a", "b"))
+    val event = Event.sign(sec, 40003, tags, "edited", Instant.ofEpochSecond(1_700_000_000, 999))
+
+    event.kind shouldBe 40003
+    event.tags shouldBe tags
+    event.createdAt shouldBe Instant.ofEpochSecond(1_700_000_000)
+    event.validSignature shouldBe true
+    event.validId shouldBe true
+  }
+
+  "signing raw fields matches signing the equivalent content" {
+    checkAll(arbEventContent) { content ->
+      val sec = SecKeyGenerator().generate()
+      val at = Instant.ofEpochSecond(1_700_000_000)
+      Event.sign(sec, content.kind, content.tags.map { it.toJsonList() }, content.toJsonString(), at) shouldBe
+        content.sign(sec, at)
+    }
+  }
+
+  "an event whose fields no longer match its id has an invalid id" {
+    val event = Event.sign(SecKeyGenerator().generate(), 9, listOf(listOf("h", "channel")), "hello")
+
+    event.validId shouldBe true
+    event.copy(content = "hullo").validId shouldBe false
+    event.copy(tags = listOf(listOf("h", "other"))).validId shouldBe false
+  }
+
   "can rehydrated event content" {
     checkAll(arbEventWithContent) { (event, content) ->
       event.content() shouldBe content

@@ -17,11 +17,15 @@
 package app.cash.nostrino.model
 
 import app.cash.nostrino.crypto.CipherText
+import app.cash.nostrino.crypto.SecKey
+import app.cash.nostrino.protocol.serde.CanonicalJson
 import app.cash.nostrino.protocol.serde.NostrJson.moshi
 import com.squareup.moshi.Json
 import fr.acinq.secp256k1.Secp256k1
 import okio.ByteString
+import okio.ByteString.Companion.encodeUtf8
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 /** The primitive type understood by relays, as per nip-01 */
 data class Event(
@@ -41,6 +45,13 @@ data class Event(
    */
   val validSignature: Boolean by lazy {
     Secp256k1.verifySchnorr(sig.toByteArray(), id.toByteArray(), pubKey.toByteArray())
+  }
+
+  /**
+   * Valid is `true` if [id] is the hash of this event's fields.
+   */
+  val validId: Boolean by lazy {
+    id == idOf(pubKey.hex(), createdAt.epochSecond, kind, tags, content)
   }
 
   /**
@@ -98,6 +109,25 @@ data class Event(
     private val adapters = mapOf(
       UserMetaData.kind to moshi.adapter(UserMetaData::class.java),
     )
+
+    /**
+     * Sign an event of any [kind] with raw [tags] and [content], as created at [at] truncated to the second. Prefer
+     * [EventContent.sign] for the kinds that have a model.
+     */
+    fun sign(
+      sec: SecKey,
+      kind: Int,
+      tags: List<List<String>>,
+      content: String,
+      at: Instant = Instant.now(),
+    ): Event {
+      val createdAt = at.truncatedTo(ChronoUnit.SECONDS)
+      val id = idOf(sec.pubKey.key.hex(), createdAt.epochSecond, kind, tags, content)
+      return Event(id, sec.pubKey.key, createdAt, kind, tags, content, sec.sign(id))
+    }
+
+    private fun idOf(pubKeyHex: String, createdAt: Long, kind: Int, tags: List<List<String>>, content: String) =
+      CanonicalJson.eventPreimage(pubKeyHex, createdAt, kind, tags, content).encodeUtf8().sha256()
 
     fun fromJson(json: String): Event? {
       return moshi.adapter(Event::class.java).fromJson(json)

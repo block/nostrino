@@ -23,6 +23,7 @@ import app.cash.nostrino.model.ArbEventContent.arbTextNote
 import app.cash.nostrino.model.ArbEventContent.arbUserMetaData
 import app.cash.nostrino.model.ArbTags.arbHashTag
 import app.cash.nostrino.model.EncryptedDm
+import app.cash.nostrino.model.Event
 import app.cash.nostrino.model.EventDeletion
 import app.cash.nostrino.model.Filter
 import app.cash.turbine.test
@@ -53,6 +54,33 @@ class RelayClientTest : StringSpec({
           this shouldBe event
           this.content shouldBe note.text
           this.content() shouldBe note
+        }
+        expectNoEvents()
+      }
+
+      stop()
+    }
+  }
+
+  "can publish and consume an event of a kind nostrino has no content type for" {
+    val sec = SecKeyGenerator().generate()
+    val event = Event.sign(
+      sec = sec,
+      kind = 1337,
+      tags = listOf(listOf("client", "nostrino"), listOf("t", "raw")),
+      content = "line\u2028separator",
+    )
+
+    with(RelayClient("ws://localhost:7707")) {
+      start()
+      subscribe(Filter(authors = setOf(sec.pubKey.key.hex()), kinds = setOf(event.kind)))
+      send(event)
+
+      allEvents.test {
+        with(awaitItem()) {
+          this shouldBe event
+          this.validId shouldBe true
+          this.validSignature shouldBe true
         }
         expectNoEvents()
       }
