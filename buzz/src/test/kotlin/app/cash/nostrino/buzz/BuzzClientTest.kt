@@ -75,7 +75,7 @@ class BuzzClientTest : StringSpec({
     val first = client.post(channel, text, at)
     val retry = client.post(channel, text, at)
 
-    retry shouldBe first
+    retry.id shouldBe first.id
     messagesIn(channel, sec) shouldContainExactly listOf(first)
   }
 

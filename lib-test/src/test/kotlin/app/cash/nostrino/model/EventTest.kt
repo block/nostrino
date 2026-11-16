@@ -55,8 +55,10 @@ class EventTest : StringSpec({
     checkAll(arbEventContent) { content ->
       val sec = SecKeyGenerator().generate()
       val at = Instant.ofEpochSecond(1_700_000_000)
-      Event.sign(sec, content.kind, content.tags.map { it.toJsonList() }, content.toJsonString(), at) shouldBe
-        content.sign(sec, at)
+      val raw = Event.sign(sec, content.kind, content.tags.map { it.toJsonList() }, content.toJsonString(), at)
+      val typed = content.sign(sec, at)
+      raw.copy(sig = typed.sig) shouldBe typed
+      raw.validSignature shouldBe true
     }
   }
 
