@@ -3,6 +3,8 @@
 
 ## [Unreleased]
 
+## [0.0.9] - 2026-11-17
+
 ### Changed
 * Schnorr signatures now use fresh BIP-340 auxiliary randomness, hardening signing against side-channel attacks. Signatures are no longer deterministic (Jem Mawson)
 
