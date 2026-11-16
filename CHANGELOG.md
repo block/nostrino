@@ -1,7 +1,7 @@
 # Change Log
 
 
-## [Unreleased]
+## [0.0.8] - 2026-11-16
 
 ### Added
 * NIP-29 group chat messages (`GroupChatMessage`, kind 9) and NIP-98 HTTP authorization (`HttpAuth`, kind 27235) (Jem Mawson)
