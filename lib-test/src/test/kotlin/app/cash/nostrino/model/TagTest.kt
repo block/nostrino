@@ -90,7 +90,7 @@ class TagTest : StringSpec({
   "string list with incorrect tag should fail to parse" {
     checkAll(Arb.pair(
       arbTag,
-      Arb.char().filterNot { setOf('e', 'p', 't').contains(it) }.map { it.toString() }
+      Arb.char().filterNot { setOf('e', 'p', 't', 'h', 'u').contains(it) }.map { it.toString() }
     )) { (tag, c) ->
       shouldThrow<IllegalArgumentException> { Tag.parseRaw(listOf(c).plus(tag.toJsonList().drop(1))) }
     }

@@ -38,6 +38,11 @@ sealed interface Tag {
         "relays" -> RelaysTag(values)
         "bolt11" -> Bolt11Tag(value)
         "preimage" -> PreimageTag(value.decodeHex())
+        "h" -> GroupTag(value)
+        "u" -> UrlTag(value)
+        "method" -> MethodTag(value)
+        "payload" -> PayloadTag(value.decodeHex())
+        "nonce" -> NonceTag(value)
         "description" -> {
           val event = Event.fromJson(value)
           require(event != null) { "Invalid tag format: $strings" }
@@ -81,6 +86,31 @@ data class Bolt11Tag(val bolt11: String) : Tag {
 
 data class PreimageTag(val preimage: ByteString) : Tag {
   override fun toJsonList() = listOf("preimage", preimage.hex())
+}
+
+/** The relay-based group an event belongs to, as defined in nip-29. */
+data class GroupTag(val groupId: String) : Tag {
+  override fun toJsonList() = listOf("h", groupId)
+}
+
+/** The absolute URL of the HTTP request an [HttpAuth] authorizes, as defined in nip-98. */
+data class UrlTag(val url: String) : Tag {
+  override fun toJsonList() = listOf("u", url)
+}
+
+/** The method of the HTTP request an [HttpAuth] authorizes, as defined in nip-98. */
+data class MethodTag(val method: String) : Tag {
+  override fun toJsonList() = listOf("method", method)
+}
+
+/** The SHA-256 hash of the body of the HTTP request an [HttpAuth] authorizes, as defined in nip-98. */
+data class PayloadTag(val sha256: ByteString) : Tag {
+  override fun toJsonList() = listOf("payload", sha256.hex())
+}
+
+/** A value that makes an otherwise identical event distinct. */
+data class NonceTag(val nonce: String) : Tag {
+  override fun toJsonList() = listOf("nonce", nonce)
 }
 
 data class ZapReceiptDescriptionTag(val description: Event) : Tag {

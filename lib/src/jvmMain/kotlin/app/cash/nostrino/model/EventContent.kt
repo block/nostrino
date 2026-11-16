@@ -32,8 +32,14 @@ interface EventContent {
 
   fun toJsonString(): String
 
-  fun sign(sec: SecKey): Event {
-    val createdAt = Instant.now().truncatedTo(ChronoUnit.SECONDS).truncatedTo(ChronoUnit.SECONDS)
+  fun sign(sec: SecKey): Event = sign(sec, Instant.now())
+
+  /**
+   * Sign this content as created at [at], truncated to the second. Signing the same content with the same key at the
+   * same second yields an event with the same id, which a relay stores once.
+   */
+  fun sign(sec: SecKey, at: Instant): Event {
+    val createdAt = at.truncatedTo(ChronoUnit.SECONDS)
     val contentJson = toJsonString()
     val tagsJson = tags.map { it.toJsonList() }
     val elements = listOf(0, sec.pubKey.key.hex(), createdAt.epochSecond, kind, tagsJson, contentJson)

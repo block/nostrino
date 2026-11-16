@@ -35,6 +35,8 @@ public final class app/cash/nostrino/model/ArbEventContent {
 	public final fun getArbEncryptedDm ()Lio/kotest/property/Arb;
 	public final fun getArbEventDeletion ()Lio/kotest/property/Arb;
 	public final fun getArbFilter ()Lio/kotest/property/Arb;
+	public final fun getArbGroupChatMessage ()Lio/kotest/property/Arb;
+	public final fun getArbHttpAuth ()Lio/kotest/property/Arb;
 	public final fun getArbReaction ()Lio/kotest/property/Arb;
 	public final fun getArbTextNote ()Lio/kotest/property/Arb;
 	public final fun getArbUserMetaData ()Lio/kotest/property/Arb;
@@ -46,10 +48,15 @@ public final class app/cash/nostrino/model/ArbTags {
 	public static final field INSTANCE Lapp/cash/nostrino/model/ArbTags;
 	public final fun getArbAmountTag ()Lio/kotest/property/Arb;
 	public final fun getArbEventTag ()Lio/kotest/property/Arb;
+	public final fun getArbGroupTag ()Lio/kotest/property/Arb;
 	public final fun getArbHashTag ()Lio/kotest/property/Arb;
 	public final fun getArbLnUrlTag ()Lio/kotest/property/Arb;
+	public final fun getArbMethodTag ()Lio/kotest/property/Arb;
+	public final fun getArbNonceTag ()Lio/kotest/property/Arb;
+	public final fun getArbPayloadTag ()Lio/kotest/property/Arb;
 	public final fun getArbPubKeyTag ()Lio/kotest/property/Arb;
 	public final fun getArbRelaysTag ()Lio/kotest/property/Arb;
 	public final fun getArbTag ()Lio/kotest/property/Arb;
+	public final fun getArbUrlTag ()Lio/kotest/property/Arb;
 }
 

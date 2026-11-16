@@ -55,6 +55,14 @@ data class Event(
       EncryptedDm.kind -> EncryptedDm(taggedPubKeys.first(), CipherText.parse(content), tags)
       EventDeletion.kind -> EventDeletion(content, taggedEventIds.toSet())
       Reaction.kind -> Reaction.from(content, taggedEventIds.last(), taggedPubKeys.last(), tags)
+      GroupChatMessage.kind -> GroupChatMessage(content, tags.filterIsInstance<GroupTag>().first().groupId, tags)
+      HttpAuth.kind -> HttpAuth(
+        url = tags.filterIsInstance<UrlTag>().first().url,
+        method = tags.filterIsInstance<MethodTag>().first().method,
+        payload = tags.filterIsInstance<PayloadTag>().firstOrNull()?.sha256,
+        nonce = tags.filterIsInstance<NonceTag>().firstOrNull()?.nonce,
+        tags = tags,
+      )
       ZapRequest.kind -> {
         val relays = tags.filterIsInstance<RelaysTag>().first().relays
         val amount = tags.filterIsInstance<AmountTag>().firstOrNull()?.amount
