@@ -46,7 +46,7 @@ class BuzzClient(
    * Throws [IOException] if the request fails or the relay does not acknowledge the event.
    *
    * The event's id derives only from [text], [channel] and [at] (to the second), so a retry with the same values
-   * re-sends the same event, which the relay stores once, rather than posting a second message. Buzz rejects an
+   * re-sends an event with the same id, which the relay stores once, rather than posting a second message. Buzz rejects an
    * event whose [at] is more than 15 minutes from the relay's clock.
    */
   fun post(channel: BuzzChannel, text: String, at: Instant = Instant.now()): Event {

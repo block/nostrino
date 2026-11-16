@@ -20,10 +20,14 @@ import app.cash.nostrino.crypto.ArbKeys.arbSecKey
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldMatch
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.stringPattern
 import io.kotest.property.checkAll
+import io.kotest.property.arbitrary.byte
+import io.kotest.property.arbitrary.byteArray
+import io.kotest.property.arbitrary.constant
 import okio.ByteString.Companion.toByteString
 
 class SecKeyTest : StringSpec({
@@ -57,6 +61,17 @@ class SecKeyTest : StringSpec({
       val encoded = Bech32Serde.encodeBytes(encoding, text.toByteArray().toByteString(), Bech32Serde.Encoding.Bech32)
       shouldThrow<IllegalArgumentException> { SecKey.parse(encoded) }
         .message shouldBe "Unsupported encoding hrp=$encoding"
+    }
+  }
+
+  "signs with fresh auxiliary randomness, so repeated signatures differ and each verifies" {
+    checkAll(arbSecKey, Arb.byteArray(Arb.constant(32), Arb.byte())) { sec, payload ->
+      val first = sec.sign(payload.toByteString())
+      val second = sec.sign(payload.toByteString())
+      first shouldNotBe second
+      listOf(first, second).forEach { signature ->
+        SchnorrSigner.verify(signature.toByteArray(), payload, sec.pubKey.key.toByteArray()) shouldBe true
+      }
     }
   }
 

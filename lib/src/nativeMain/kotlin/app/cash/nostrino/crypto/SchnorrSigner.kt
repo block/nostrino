@@ -17,10 +17,11 @@
 package app.cash.nostrino.crypto
 
 import fr.acinq.secp256k1.Secp256k1
+import org.kotlincrypto.SecureRandom
 
 actual object SchnorrSigner {
   actual fun sign(payload: ByteArray, privateKey: ByteArray): ByteArray =
-    Secp256k1.signSchnorr(payload, privateKey, null)
+    Secp256k1.signSchnorr(payload, privateKey, ByteArray(32).also(SecureRandom()::nextBytesCopyTo))
 
   actual fun verify(signature: ByteArray, data: ByteArray, publicKey: ByteArray): Boolean =
     Secp256k1.verifySchnorr(signature, data, publicKey)
