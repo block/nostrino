@@ -22,14 +22,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@0717577d45739eb3c851188b29f50ed6c0b2194e # v2
 
       - name: Test
         run: ${{ matrix.cmd }}
 
       - name: Publish Test Report
         if: ${{ always() }}
-        uses: mikepenz/action-junit-report@v2
+        uses: mikepenz/action-junit-report@127c778ac944abc0f48a5103964304bab7eb208b # v2
         with:
           check_name: Test Report - ${{ matrix.cmd }}
           report_paths: '**/build/test-results/test/TEST-*.xml'
