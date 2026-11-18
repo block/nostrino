@@ -3,6 +3,11 @@
 
 ## [Unreleased]
 
+## [0.0.10] - 2026-11-18
+
+### Fixed
+* `Bech32Serde` decoding rejects characters outside the bech32 alphabet with `IllegalArgumentException`, instead of throwing `ArrayIndexOutOfBoundsException` or decoding them as another character (Jem Mawson)
+
 ## [0.0.9] - 2026-11-17
 
 ### Changed
