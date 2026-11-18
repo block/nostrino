@@ -91,7 +91,7 @@ object Bech32Serde {
       vs.forEach { v ->
         val b = chk shr 25
         chk = ((chk and 0x1ffffff) shl 5) xor v.toInt()
-        for (i in 0..5) {
+        for (i in GEN.indices) {
           if (((b shr i) and 1) != 0) chk = chk xor GEN[i]
         }
       }
@@ -154,6 +154,7 @@ object Bech32Serde {
     require(hrp.length in 1..83) { "hrp must contain 1 to 83 characters" }
     val data = Array<Byte>(input.length - pos - 1) { 0 }
     for (i in 0..data.lastIndex) data[i] = charToFive[input[pos + 1 + i].code]
+    require(data.none { it < 0 }) { "invalid character" }
     return if (noChecksum) {
       Triple(hrp, data, Encoding.Beck32WithoutChecksum)
     } else {
