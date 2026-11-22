@@ -20,6 +20,7 @@ package app.cash.nostrino.crypto
 import app.cash.nostrino.crypto.ArbKeys.arbHash
 import fr.acinq.secp256k1.Secp256k1
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.shouldBe
 import io.kotest.property.checkAll
 
@@ -31,5 +32,10 @@ class SecKeyGeneratorTest : StringSpec({
       val sig = sec.sign(hash)
       Secp256k1.get().verifySchnorr(sig.toByteArray(), hash.toByteArray(), sec.pubKey.key.toByteArray()) shouldBe true
     }
+  }
+
+  "generates keys across the whole key space" {
+    val leadingNibbles = List(1_000) { SecKeyGenerator().generate().hex().first() }.toSet()
+    leadingNibbles shouldContainAll "0123456789abcdef".toList()
   }
 })

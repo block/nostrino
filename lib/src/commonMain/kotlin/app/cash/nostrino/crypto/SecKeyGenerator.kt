@@ -17,6 +17,7 @@
 
 package app.cash.nostrino.crypto
 
+import okio.ByteString
 import okio.ByteString.Companion.toByteString
 import org.kotlincrypto.SecureRandom
 
@@ -27,11 +28,12 @@ class SecKeyGenerator {
     val bs = ByteArray(32)
     SecureRandom().nextBytesCopyTo(bs)
     val sec = bs.toByteString()
-    return if (sec.hex() > MAX_SEC) generate() else SecKey(sec)
+    return if (sec.hex() < CURVE_ORDER && sec != ZERO) SecKey(sec) else generate()
   }
 
   companion object {
-    private const val MAX_SEC =
-      "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141"
+    private const val CURVE_ORDER =
+      "fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141"
+    private val ZERO = ByteString.of(*ByteArray(32))
   }
 }
