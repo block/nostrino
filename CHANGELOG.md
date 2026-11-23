@@ -3,6 +3,8 @@
 
 ## [Unreleased]
 
+## [0.0.11] - 2026-11-23
+
 ### Fixed
 * `SecKeyGenerator` draws keys uniformly from the whole secp256k1 key space. It used to discard every key whose hex began with `a`–`f`, and could return zero (Jem Mawson)
 
