@@ -90,10 +90,11 @@ class BuzzClientTest : StringSpec({
     messagesIn(channel, sec) shouldContainExactly listOf(posted)
   }
 
-  "a post to a private channel by a non-member fails" {
+  "a post to a private channel by a non-member fails with the relay's reason" {
     val channel = createChannel(arbSecKey.next(), "private")
 
     shouldThrow<IOException> { BuzzClient(arbSecKey.next()).post(channel, arbVanillaString.next()) }
+      .message shouldBe """Buzz relay returned HTTP 400: {"error":"restricted: not a channel member"}"""
   }
 
   "on a relay with closed membership, a non-member posts on a member's attestation" {
