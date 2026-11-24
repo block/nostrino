@@ -151,8 +151,9 @@ Nostrino follows the **Sociable Unit Testing** approach for comprehensive, resil
 - **Integration Tests**: Use the Docker relays that start before the tests that need them:
   - nostr-rs-relay at `ws://localhost:7707`, started by `lib-test`, for NIP-01 websocket traffic
   - the Buzz relay (`ghcr.io/block/buzz`, with Postgres and Redis, from `buzz/buzz-relay.compose.yml`), started by `buzz`, at
-    `http://localhost:7708`, for Buzz's HTTP API, and a second Buzz relay with closed membership at
-    `http://localhost:7709`, owned by the key whose secret is 1, for NIP-OA owner attestation
+    `http://localhost:7708`, for Buzz's HTTP API
+  - a second Buzz relay from the same file, with closed membership, at `http://localhost:7709`, owned by the key whose
+    secret is 1, for NIP-OA owner attestation
 - **Never use MockWebServer**: Do not use MockWebServer, or any other mock HTTP server, in tests. Test HTTP clients
   against the real relay in Docker, so the tests prove what the relay accepts. Keep Docker image tags pinned to a
   released version, and update them when the relay releases

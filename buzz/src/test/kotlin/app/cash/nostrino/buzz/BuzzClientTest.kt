@@ -128,10 +128,9 @@ class BuzzClientTest : StringSpec({
     private val relay = "http://localhost:7708".toHttpUrl()
     private val eventsUrl = relay.resolve("/events")!!
 
-    /** The fixture's relay that admits only its members, and NIP-OA attested keys, at which [relayOwner] is a member. */
     private val closedRelay = "http://localhost:7709".toHttpUrl()
 
-    /** The closed relay's owner: the key whose secret is 1, from NIP-OA's test vectors. */
+    /** Secret 1, the NIP-OA test-vector key. */
     private val relayOwner = SecKey(ByteString.of(*ByteArray(32).also { it[31] = 1 }))
     private val http = OkHttpClient()
     private val moshi = Moshi.Builder().build()
@@ -147,7 +146,6 @@ class BuzzClientTest : StringSpec({
       canonical.toJson(listOf(0, pubKey.hex(), createdAt.epochSecond, kind, tags, content)).encodeUtf8().sha256()
     }
 
-    /** A nip-oa `auth` tag, as JSON, by which [owner] authorizes [agent] with no conditions. */
     fun ownerAttestation(owner: SecKey, agent: SecKey): String {
       val sig = owner.sign("nostr:agent-auth:${agent.pubKey.hex()}:".encodeUtf8().sha256())
       return canonical.toJson(listOf("auth", owner.pubKey.hex(), "", sig.hex()))
@@ -169,7 +167,8 @@ class BuzzClientTest : StringSpec({
     /** The chat messages stored in [channel], as read by its member [sec]. */
     fun messagesIn(channel: BuzzChannel, sec: SecKey, at: HttpUrl = relay): List<Event> {
       val filter = listOf(mapOf("kinds" to listOf(9), "#h" to listOf(channel.channelId)))
-      val events = moshi.adapter(List::class.java).fromJson(submit(sec, at.resolve("/query")!!, canonical.toJson(filter))).orEmpty()
+      val response = submit(sec, at.resolve("/query")!!, canonical.toJson(filter))
+      val events = moshi.adapter(List::class.java).fromJson(response).orEmpty()
       return events.map { Event.fromJson(moshi.adapter(Any::class.java).toJson(it)).shouldNotBeNull() }
     }
 

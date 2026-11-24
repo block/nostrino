@@ -34,9 +34,9 @@ import java.util.UUID
 /**
  * Posts chat messages to [Buzz](https://github.com/block/buzz) channels as [sec]. Each message is a kind-9
  * [GroupChatMessage] tagged with the channel, POSTed to the community's events endpoint with [HttpAuth]
- * authentication. [sec] must belong to a member of the channel. On a relay with closed membership, [authTag], a
- * [nip-oa](https://github.com/block/buzz/blob/main/docs/nips/NIP-OA.md) `auth` tag as JSON, admits [sec] on the
- * membership of the relay member who signed it.
+ * authentication. [sec] must belong to a member of the channel. [authTag], a
+ * [NIP-OA](https://github.com/block/buzz/blob/main/docs/nips/NIP-OA.md) `auth` tag as JSON, lets [sec] post to a
+ * relay with closed membership on behalf of the member who signed it.
  */
 class BuzzClient(
   private val sec: SecKey,
