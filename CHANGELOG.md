@@ -3,6 +3,9 @@
 
 ## [Unreleased]
 
+### Added
+* `BuzzClient` sends a NIP-OA owner attestation, so relays with closed membership admit keys on a member's behalf (Jem Mawson)
+
 ## [0.0.11] - 2026-11-23
 
 ### Fixed
