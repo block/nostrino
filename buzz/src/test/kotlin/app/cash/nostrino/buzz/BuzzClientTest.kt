@@ -96,6 +96,22 @@ class BuzzClientTest : StringSpec({
     shouldThrow<IOException> { BuzzClient(arbSecKey.next()).post(channel, arbVanillaString.next()) }
   }
 
+  "on a relay with closed membership, a non-member posts on a member's attestation" {
+    val agent = arbSecKey.next()
+    val channel = createChannel(relayOwner, "open", closedRelay)
+
+    val posted = BuzzClient(agent, authTag = ownerAttestation(relayOwner, agent)).post(channel, arbVanillaString.next())
+
+    posted.pubKey shouldBe agent.pubKey.key
+    messagesIn(channel, relayOwner, closedRelay) shouldContainExactly listOf(posted)
+  }
+
+  "on a relay with closed membership, a non-member's post without an attestation fails" {
+    val channel = createChannel(relayOwner, "open", closedRelay)
+
+    shouldThrow<IOException> { BuzzClient(arbSecKey.next()).post(channel, arbVanillaString.next()) }
+  }
+
   "a post to a channel that does not exist fails" {
     val channel = BuzzChannel(eventsUrl, arbUUID.next().toString())
 
@@ -111,7 +127,11 @@ class BuzzClientTest : StringSpec({
   companion object {
     private val relay = "http://localhost:7708".toHttpUrl()
     private val eventsUrl = relay.resolve("/events")!!
-    private val queryUrl = relay.resolve("/query")!!
+
+    private val closedRelay = "http://localhost:7709".toHttpUrl()
+
+    /** Secret 1, the NIP-OA test-vector key. */
+    private val relayOwner = SecKey(ByteString.of(*ByteArray(32).also { it[31] = 1 }))
     private val http = OkHttpClient()
     private val moshi = Moshi.Builder().build()
     private val canonical = moshi.adapter(List::class.java)
@@ -126,8 +146,13 @@ class BuzzClientTest : StringSpec({
       canonical.toJson(listOf(0, pubKey.hex(), createdAt.epochSecond, kind, tags, content)).encodeUtf8().sha256()
     }
 
+    fun ownerAttestation(owner: SecKey, agent: SecKey): String {
+      val sig = owner.sign("nostr:agent-auth:${agent.pubKey.hex()}:".encodeUtf8().sha256())
+      return canonical.toJson(listOf("auth", owner.pubKey.hex(), "", sig.hex()))
+    }
+
     /** A new channel with [visibility], created by [sec], who becomes its first member. */
-    fun createChannel(sec: SecKey, visibility: String): BuzzChannel {
+    fun createChannel(sec: SecKey, visibility: String, at: HttpUrl = relay): BuzzChannel {
       val channelId = UUID.randomUUID().toString()
       val tags = listOf(
         listOf("h", channelId),
@@ -135,14 +160,15 @@ class BuzzClientTest : StringSpec({
         listOf("visibility", visibility),
         listOf("channel_type", "stream"),
       )
-      submit(sec, eventsUrl, signed(sec, 9007, tags).toJson())
-      return BuzzChannel(eventsUrl, channelId)
+      submit(sec, at.resolve("/events")!!, signed(sec, 9007, tags).toJson())
+      return BuzzChannel(at.resolve("/events")!!, channelId)
     }
 
     /** The chat messages stored in [channel], as read by its member [sec]. */
-    fun messagesIn(channel: BuzzChannel, sec: SecKey): List<Event> {
+    fun messagesIn(channel: BuzzChannel, sec: SecKey, at: HttpUrl = relay): List<Event> {
       val filter = listOf(mapOf("kinds" to listOf(9), "#h" to listOf(channel.channelId)))
-      val events = moshi.adapter(List::class.java).fromJson(submit(sec, queryUrl, canonical.toJson(filter))).orEmpty()
+      val response = submit(sec, at.resolve("/query")!!, canonical.toJson(filter))
+      val events = moshi.adapter(List::class.java).fromJson(response).orEmpty()
       return events.map { Event.fromJson(moshi.adapter(Any::class.java).toJson(it)).shouldNotBeNull() }
     }
 

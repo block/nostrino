@@ -34,11 +34,14 @@ import java.util.UUID
 /**
  * Posts chat messages to [Buzz](https://github.com/block/buzz) channels as [sec]. Each message is a kind-9
  * [GroupChatMessage] tagged with the channel, POSTed to the community's events endpoint with [HttpAuth]
- * authentication. [sec] must belong to a member of the channel.
+ * authentication. [sec] must belong to a member of the channel. [authTag], a
+ * [NIP-OA](https://github.com/block/buzz/blob/main/docs/nips/NIP-OA.md) `auth` tag as JSON, lets [sec] post to a
+ * relay with closed membership on behalf of the member who signed it.
  */
 class BuzzClient(
   private val sec: SecKey,
   private val httpClient: OkHttpClient = OkHttpClient(),
+  private val authTag: String? = null,
 ) {
 
   /**
@@ -61,6 +64,7 @@ class BuzzClient(
     val request = Request.Builder()
       .url(channel.eventsUrl)
       .header("Authorization", HttpAuth.header(auth))
+      .apply { authTag?.let { header("x-auth-tag", it) } }
       .post(body.toRequestBody("application/json".toMediaType()))
       .build()
     val acknowledgement = httpClient.newCall(request).execute().use { response ->

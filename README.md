@@ -24,6 +24,8 @@ val client = BuzzClient(SecKey.parse(nsec))
 client.post(BuzzChannel.parse("wss://buzz.example.com", channelId), "Hello, Buzz")
 ```
 
+To post to a relay with closed membership as a non-member, pass a member's NIP-OA `auth` tag as `authTag`.
+
 ### Signing events and HTTP requests
 
 ```kotlin
