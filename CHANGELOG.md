@@ -4,7 +4,10 @@
 ## [Unreleased]
 
 ### Added
-* `BuzzClient` takes a NIP-OA `authTag`, sent as `x-auth-tag`, so a relay with closed membership admits a non-member key on a member's behalf. Its constructor's binary signature changes, so recompile callers (Jem Mawson)
+* `BuzzClient` takes a NIP-OA `authTag`, sent as `x-auth-tag`, so a relay with closed membership admits a non-member key on a member's behalf. Its constructor's binary signature changes, so recompile callers. It throws `IllegalArgumentException` for a tag that is not a NIP-OA `auth` tag by another key, or not a valid HTTP header value (Jem Mawson)
+
+### Changed
+* When the relay refuses a `BuzzClient` post, the `IOException` message carries the relay's reason (Jem Mawson)
 
 ## [0.0.11] - 2026-11-23
 
