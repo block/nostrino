@@ -22,6 +22,7 @@ import app.cash.nostrino.model.GroupChatMessage
 import app.cash.nostrino.model.HttpAuth
 import app.cash.nostrino.protocol.serde.NostrJson.moshi
 import com.squareup.moshi.JsonAdapter
+import okhttp3.Headers.Companion.headersOf
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -36,7 +37,9 @@ import java.util.UUID
  * [GroupChatMessage] tagged with the channel, POSTed to the community's events endpoint with [HttpAuth]
  * authentication. [sec] must belong to a member of the channel. [authTag], a
  * [NIP-OA](https://github.com/block/buzz/blob/main/docs/nips/NIP-OA.md) `auth` tag as JSON, lets [sec] post to a
- * relay with closed membership on behalf of the member who signed it.
+ * relay with closed membership on behalf of the member who signed it. The relay verifies its signature; the client
+ * checks only its shape, and throws [IllegalArgumentException] if it is not an `auth` tag by a key other than [sec] or
+ * not a valid HTTP header value.
  */
 class BuzzClient(
   private val sec: SecKey,
@@ -44,9 +47,21 @@ class BuzzClient(
   private val authTag: String? = null,
 ) {
 
+  init {
+    authTag?.let { tag ->
+      require(runCatching { headersOf("x-auth-tag", tag) }.isSuccess) {
+        "Buzz auth tag must be a valid HTTP header value."
+      }
+      require(isAttestation(tag)) {
+        "Buzz auth tag must be a NIP-OA tag [\"auth\",owner,conditions,signature] by a key other than the poster's."
+      }
+    }
+  }
+
   /**
    * Post [text] to [channel] as created at [at], and return the posted event once the relay has acknowledged it.
-   * Throws [IOException] if the request fails or the relay does not acknowledge the event.
+   * Throws [IOException] if the request fails or the relay does not acknowledge the event. A refusal's message carries
+   * the relay's reason.
    *
    * The event's id derives only from [text], [channel] and [at] (to the second), so a retry with the same values
    * re-sends an event with the same id, which the relay stores once, rather than posting a second message. Buzz rejects an
@@ -68,7 +83,9 @@ class BuzzClient(
       .post(body.toRequestBody("application/json".toMediaType()))
       .build()
     val acknowledgement = httpClient.newCall(request).execute().use { response ->
-      if (!response.isSuccessful) throw IOException("Buzz relay returned HTTP ${response.code}.")
+      if (!response.isSuccessful) {
+        throw IOException("Buzz relay returned HTTP ${response.code}: ${response.peekBody(MAX_REASON_BYTES).string()}")
+      }
       runCatching { acknowledgementAdapter.fromJson(response.body.source()) }
         .getOrElse { throw IOException("Buzz relay returned a malformed acknowledgement.", it) }
     }
@@ -78,7 +95,23 @@ class BuzzClient(
     return message
   }
 
+  private fun isAttestation(tag: String): Boolean {
+    val elements = runCatching { tagAdapter.fromJson(tag) }.getOrNull().orEmpty()
+    val strings = elements.filterIsInstance<String>()
+    return strings.size == 4 &&
+      elements.size == 4 &&
+      strings[0] == "auth" &&
+      strings[1].isLowercaseHex(64) &&
+      strings[1] != sec.pubKey.hex() &&
+      strings[3].isLowercaseHex(128)
+  }
+
+  private fun String.isLowercaseHex(length: Int): Boolean =
+    this.length == length && all { it in '0'..'9' || it in 'a'..'f' }
+
   private companion object {
+    val MAX_REASON_BYTES = 1024L
     val acknowledgementAdapter: JsonAdapter<Map<*, *>> = moshi.adapter(Map::class.java)
+    val tagAdapter: JsonAdapter<List<*>> = moshi.adapter(List::class.java)
   }
 }

@@ -28,6 +28,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldMatch
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.arbitrary
 import io.kotest.property.arbitrary.long
@@ -90,10 +91,44 @@ class BuzzClientTest : StringSpec({
     messagesIn(channel, sec) shouldContainExactly listOf(posted)
   }
 
-  "a post to a private channel by a non-member fails" {
+  "a post to a private channel by a non-member fails with the relay's reason" {
     val channel = createChannel(arbSecKey.next(), "private")
 
-    shouldThrow<IOException> { BuzzClient(arbSecKey.next()).post(channel, arbVanillaString.next()) }
+    val failure = shouldThrow<IOException> { BuzzClient(arbSecKey.next()).post(channel, arbVanillaString.next()) }
+
+    failure.message shouldMatch Regex("Buzz relay returned HTTP 4\\d\\d: .*\\S.*")
+  }
+
+  "a malformed owner attestation is refused" {
+    val sec = arbSecKey.next()
+    val owner = arbSecKey.next().pubKey.hex()
+    val sig = "2".repeat(128)
+    listOf(
+      "not json",
+      """["auth","$owner",""]""",
+      """["auth","$owner","","$sig","extra"]""",
+      """["delegation","$owner","","$sig"]""",
+      """["auth","${owner.uppercase()}","","$sig"]""",
+      """["auth","${owner.take(62)}","","$sig"]""",
+      """["auth","$owner","","${sig.take(64)}"]""",
+      """["auth","$owner",0,"$sig"]""",
+      """["auth","${sec.pubKey.hex()}","","$sig"]""",
+    ).forEach { tag ->
+      shouldThrow<IllegalArgumentException> { BuzzClient(sec, authTag = tag) }
+    }
+  }
+
+  "an owner attestation that is not a valid HTTP header value is refused" {
+    val owner = arbSecKey.next().pubKey.hex()
+    val sig = "2".repeat(128)
+    listOf(
+      "[\"auth\",\n\"$owner\",\n\"\",\n\"$sig\"]",
+      "[\"auth\",\r\n\"$owner\",\"\",\"$sig\"]",
+      "[\"auth\",\"$owner\",\"kind=9\u007f\",\"$sig\"]",
+      "[\"auth\",\"$owner\",\"kind=9\u00e9\",\"$sig\"]",
+    ).forEach { tag ->
+      shouldThrow<IllegalArgumentException> { BuzzClient(arbSecKey.next(), authTag = tag) }
+    }
   }
 
   "on a relay with closed membership, a non-member posts on a member's attestation" {
