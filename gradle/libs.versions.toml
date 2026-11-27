@@ -6,7 +6,7 @@ kotest = "5.8.1"
 # @pin
 kotlin = "1.9.23"
 kotlinBinaryCompatibilityPlugin = "0.13.2"
-kotlinCoroutines = "1.7.2"
+kotlinCoroutines = "1.11.0"
 kotlinLogging = "3.0.5"
 mavenPublishGradlePlugin = "0.34.0"
 moshi = "1.15.0"
